@@ -1,0 +1,1 @@
+const { reportModel } = require('../models/reportsModel');

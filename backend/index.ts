@@ -1,8 +1,8 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const userRouter = require('./src/routes/userRoutes');
-const reportRouter = require('./src/routes/reportRoutes');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import { userRouter } from './src/routes/userRoutes';
+import { reportRouter } from './src/routes/reportRoutes';
+import cors from 'cors';
 
 mongoose.connect('mongodb://localhost:27017/dbPluvia');
 

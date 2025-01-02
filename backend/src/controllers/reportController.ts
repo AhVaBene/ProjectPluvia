@@ -75,7 +75,7 @@ export class reportController {
         const reportData = req.body; // Get the report data from the request body
         console.log(req.body)
 
-        const newReport = new reportModel(reportData);
+        //const newReport = new reportModel(reportData);
     
         // newReport
         //   .save()

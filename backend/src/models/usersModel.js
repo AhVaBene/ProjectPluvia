@@ -4,7 +4,13 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String,
     admin: Number,
-    indirizzi: [String]
+    indirizzi: [{
+        city: String,
+        address: String,
+        latitude: Number,
+        longitude: Number,
+        }
+    ]
 });
 
 const userModel = mongoose.model('User', userSchema)

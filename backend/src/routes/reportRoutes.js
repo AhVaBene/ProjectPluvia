@@ -1,16 +1,15 @@
-import express from 'express';
-const router = express.Router();
-import { reportController } from '../controllers/reportController.js';
+const express = require('express');
+const reportRouter = express.Router();
+const reportController = require('../controllers/reportController');
 
 //router.route('/').get(reportController.getReportsNearby);
 
-router.route('/')
+reportRouter.route('/')
     .get(reportController.getAllReports)
-    .post(reportController.createReport)
-router.route('/:id')
+    .post(reportController.createReport);
+
+reportRouter.route('/:id')
     .put(reportController.updateReport)
     .delete(reportController.deleteReport)
 
-export const reportRouter = router;
-
-//module.exports = router ;
+module.exports = reportRouter;

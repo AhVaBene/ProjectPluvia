@@ -1,9 +1,7 @@
-import { reportModel } from '../models/reportsModel.js';
+const { userModel } = require('../models/usersModel.js');
 
-
-export class userController {
-    static getUserbyId = (req, res) => {
-        reportModel.find()
+exports.getUserbyId = (req, res) => {
+    userModel.find()
         .where('id').equals(req.params.id)
         .then(doc => {
             if (!doc) {
@@ -14,9 +12,10 @@ export class userController {
         .catch(err => {
             res.status(500).send(err);
         });
-    }
-    static login = (req, res) => {
-        reportModel.find()
+}
+
+exports.login = (req, res) => {
+    userModel.find()
         .where('id').equals(req.query.username)
         .where('password').equals(req.query.password)
         .then(doc => {
@@ -28,5 +27,4 @@ export class userController {
         .catch(err => {
             res.status(500).send(err);
         });
-    }
 }

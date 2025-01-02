@@ -2,7 +2,12 @@ const mongoose = require('mongoose')
 
 const reportSchema = new mongoose.Schema({
     id: String,
-    address: String,
+    location: {
+        city: String,
+        address: String,
+        latitude: Number,
+        longitude: Number,
+        },
     pic: String,
     riskLevel: Number,
     date: Date,

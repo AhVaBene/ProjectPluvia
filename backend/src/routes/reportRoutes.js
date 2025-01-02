@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { reportController } from '../controllers/reportController';
+import { reportController } from '../controllers/reportController.js';
 
 //router.route('/').get(reportController.getReportsNearby);
 
@@ -12,3 +12,5 @@ router.route('/:id')
     .delete(reportController.deleteReport)
 
 export const reportRouter = router;
+
+//module.exports = router ;

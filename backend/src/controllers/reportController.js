@@ -1,9 +1,8 @@
-import { Location } from "../../location";
-import { reportModel } from '../models/reportsModel';
+import { reportModel } from '../models/reportsModel.js';
 
 export class reportController {
-    static getReportsNearby = (req: { query: Location; }, res) => {
-        let location: Location = req.query;
+    static getReportsNearby = (req, res) => {
+        let location = req.query;
 
         reportModel.find()
             .where('address.latitude').gte(location.latitude - 100)

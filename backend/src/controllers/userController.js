@@ -1,8 +1,8 @@
-import { Location } from "../../location";
-import { reportModel } from '../models/reportsModel';
+import { reportModel } from '../models/reportsModel.js';
+
 
 export class userController {
-    static getUserbyId = (req: { params: { id: String; }; }, res) => {
+    static getUserbyId = (req, res) => {
         reportModel.find()
         .where('id').equals(req.params.id)
         .then(doc => {
@@ -15,7 +15,7 @@ export class userController {
             res.status(500).send(err);
         });
     }
-    static login = (req: { query: { username: String; password: String; }; }, res) => {
+    static login = (req, res) => {
         reportModel.find()
         .where('id').equals(req.query.username)
         .where('password').equals(req.query.password)

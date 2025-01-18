@@ -1,5 +1,5 @@
 const { userModel } = require('../models/usersModel.js');
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 exports.getUserbyUsername = (req, res) => {
     userModel.findOne()
@@ -25,8 +25,8 @@ exports.login = (req, res) => {
             if (!user) {
                 return res.status(404).send('Wrong credentials');
             }
-            //const token = jwt.sign(user, process.env.JWT_KEY); TODO
-            res.json({token, user});
+            const token = jwt.sign({ user: user }, 'secret_key');
+            res.json({ token, user });
         })
         .catch(err => {
             res.status(500).send(err);

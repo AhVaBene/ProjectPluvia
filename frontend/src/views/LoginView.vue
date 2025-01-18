@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
+import  router  from '@/router/'
 import axios from 'axios';
 import { reactive } from 'vue';
 
@@ -31,6 +32,7 @@ const login = async () => {
         ).data
 
         userStore.login(data.username, res.token);
+        router.push('/')
     } catch (err) {
         console.log("ERR: " + err)
     }

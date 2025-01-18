@@ -73,14 +73,14 @@ exports.createReport = (req, res) => {
     const reportData = req.body; // Get the report data from the request body
     console.log(req.body)
 
-    //const newReport = new reportModel(reportData);
+    const newReport = new reportModel(reportData);
 
-    // newReport
-    //   .save()
-    //   .then((savedReport) => {
-    //     res.status(201).json(savedReport); // Respond with the created report and 201 status
-    //   })
-    //   .catch((err) => {
-    //     res.status(500).send(err);
-    //   });
+    newReport
+      .save()
+      .then((savedReport) => {
+        res.status(201).json(savedReport); // Respond with the created report and 201 status
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
 };

@@ -1,8 +1,9 @@
 const { userModel } = require('../models/usersModel.js');
+const jwt = require("jsonwebtoken");
 
-exports.getUserbyId = (req, res) => {
-    userModel.find()
-        .where('id').equals(req.params.id)
+exports.getUserbyUsername = (req, res) => {
+    userModel.findOne()
+        .where('username').equals(req.params.id)
         .then(doc => {
             if (!doc) {
                 return res.status(404).send('User not found');
@@ -15,14 +16,17 @@ exports.getUserbyId = (req, res) => {
 }
 
 exports.login = (req, res) => {
-    userModel.find()
-        .where('id').equals(req.query.username)
-        .where('password').equals(req.query.password)
-        .then(doc => {
-            if (!doc) {
-                return res.status(404).send('User not found');
+    const { username, password } = req.query;
+    console.log(req);
+    userModel.findOne()
+        .where('username').equals(username)
+        .where('password').equals(password)
+        .then(user => {
+            if (!user) {
+                return res.status(404).send('Wrong credentials');
             }
-            res.json(doc);
+            //const token = jwt.sign(user, process.env.JWT_KEY); TODO
+            res.json({token, user});
         })
         .catch(err => {
             res.status(500).send(err);

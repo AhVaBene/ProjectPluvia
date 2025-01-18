@@ -2,7 +2,7 @@ const { reportModel } = require('../models/reportsModel.js');
 
 exports.getReportsNearby = (req, res) => {
     let location = req.query;
-
+    //TODO
     reportModel.find()
         .where('address.latitude').gte(location.latitude - 100)
         .lte(location.latitude + 100)

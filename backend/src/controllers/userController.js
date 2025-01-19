@@ -16,8 +16,9 @@ exports.getUserbyUsername = (req, res) => {
 }
 
 exports.getUserbyToken = (req, res) => {
-    const username = jwt.verify(req.params.id, 'secret_key');
-    userModel.findOne(username)
+    const user = jwt.verify(req.params.id, 'secret_key');
+    userModel.findOne()
+        .where('username').equals(user.username)
         .then(doc => {
             if (!doc) {
                 return res.status(404).send('User not found');
@@ -39,7 +40,7 @@ exports.login = (req, res) => {
             if (!user) {
                 return res.status(404).send('Wrong credentials');
             }
-            const token = jwt.sign({ user: user }, 'secret_key');
+            const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
             res.json({ token, user });
         })
         .catch(err => {

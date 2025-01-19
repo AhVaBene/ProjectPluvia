@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 userRouter.route('/login')
     .get(userController.login);
 
-userRouter.route('/token')
+userRouter.route('/token/:id')
     .get(userController.getUserbyToken);
 
 userRouter.route('/:id')

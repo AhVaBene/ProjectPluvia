@@ -19,31 +19,31 @@ const router = createRouter({
   ],
 })
 
-async function getUser(): Promise<string> {
-  const token = localStorage.getItem('token');
-  try{
-    const res = (await axios.get("http://localhost:3000/users/token/" + token)).data
-    return res.username;
-  } catch (err) {
-    console.log("ERR: " + err)
-    return "";
-  }
-}
-
 async function isTokenValid(): Promise<Boolean> {
+  const token = localStorage.getItem('token');
   const user = localStorage.getItem('user');
 
-  const decoded = await getUser();
+  if(token == '' || user == '') {
+    return false;
+  }
+
+  const decoded: string = await axios.get("http://localhost:3000/users/token/" + token).then(res => {
+    return res.data.username;
+  }).catch(e => {
+    console.log(e)
+    return '';
+  });
     
   return decoded == user;
 }
 
 router.beforeEach(async function (to, from) {
-  //console.log('beforeEach', to.path + ' - Auth: ' + localStorage.getItem('token'))
-  if ((to.path !== '/login' && to.path !== 'login') && !isTokenValid()) {
+  const auth: Boolean = await isTokenValid();
+  console.log('beforeEach', to.path + ' - Auth: ' + localStorage.getItem('token') + " => " + auth)
+  if ((to.path !== '/login' && to.path !== 'login') && !auth) {
     return { path: '/login' }
 
-  } else if ((to.path === '/login' || to.path === 'login') && await isTokenValid()) {
+  } else if ((to.path === '/login' || to.path === 'login') && auth) {
     return { path: '/' }
 
   } else {

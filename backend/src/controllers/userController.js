@@ -32,7 +32,6 @@ exports.getUserbyToken = (req, res) => {
 
 exports.login = (req, res) => {
     const { username, password } = req.query;
-    console.log(req);
     userModel.findOne()
         .where('username').equals(username)
         .where('password').equals(password)
@@ -41,7 +40,27 @@ exports.login = (req, res) => {
                 return res.status(404).send('Wrong credentials');
             }
             const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
-            res.json({ token, user });
+            res.json({ token });
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        });
+}
+
+exports.register = (req, res) => {
+    const { name, surname, username, password, address } = req.query;
+    const newUser = new userModel({
+        name: name,
+        surname: surname,
+        username: username,
+        password: password,
+        admin: 0,
+        address: address //TODO
+    })
+    newUser.save()
+        .then(user => {
+            const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
+            res.json({ token });
         })
         .catch(err => {
             res.status(500).send(err);

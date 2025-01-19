@@ -5,10 +5,13 @@ const userController = require('../controllers/userController');
 userRouter.route('/login')
     .get(userController.login);
 
+userRouter.route('/register')
+    .get(userController.register);
+
 userRouter.route('/token/:id')
     .get(userController.getUserbyToken);
 
-userRouter.route('/:id')
+userRouter.route('/profile/:id')
     .get(userController.getUserbyUsername);
 
 module.exports = userRouter;

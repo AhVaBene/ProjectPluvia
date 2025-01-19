@@ -1,1 +1,1 @@
-{"username": "User0", "password": "prova", "admin": "1", "indirizzi": ["addr1", "addr2"]}
+{"username": "User0", "password": "prova", "admin": "1", "indirizzi": [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": "44.14830115885112", "longitude": "12.235541253200406"}]}

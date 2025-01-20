@@ -2,11 +2,12 @@ const express = require('express');
 const reportRouter = express.Router();
 const reportController = require('../controllers/reportController');
 
-//router.route('/').get(reportController.getReportsNearby);
-
 reportRouter.route('/')
     .get(reportController.getAllReports)
     .post(reportController.createReport);
+
+reportRouter.route('/home')
+    .get(reportController.getReportsNearby);
 
 reportRouter.route('/:id')
     .put(reportController.updateReport)

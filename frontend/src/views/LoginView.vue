@@ -7,18 +7,18 @@
 <LoginContainer v-if="isLogin"/>
 <RegisterComponent v-if="!isLogin"/>
 
-<!-- Switch to register buttons -->
+<!-- Switch to register button -->
 <div v-if="isLogin" class="text-center pt-2">
     <p>Not a member? <a class="text-primary" @click="onClicked">Register</a></p>
 </div>
-<!-- Switch to login buttons -->
+<!-- Switch to login button -->
 <div v-if="!isLogin" class="text-center pt-2">
     <p>Already have an account? <a class="text-primary" @click="onClicked">Login</a></p>
 </div>
 </template>
 
 <script setup lang="ts">
-import LoginContainer from '@/components/loginContainer.vue';
+import LoginContainer from '@/components/LoginContainer.vue';
 import RegisterComponent from '@/components/RegisterComponent.vue';
 import { ref } from 'vue';
 

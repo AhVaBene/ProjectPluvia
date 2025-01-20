@@ -1,7 +1,6 @@
 <template>
 <form @submit.prevent="register">
     <p class="text-center">Create a new account</p>
-    <p v-if="registerError" class="text-danger">The username is already chosen. Please pick another one</p>
     <!-- Name input -->
     <MDBInput required v-model="data.name" label="Name" id="name" wrapperClass="mb-3"/>
 
@@ -16,6 +15,8 @@
 
     <!-- Location input TODO -->
     <MDBInput required v-model="data.address" label="Favorite Address" id="address" wrapperClass="mb-3" />
+
+    <p v-if="registerError" class="text-danger">The username is already chosen. Please pick another one</p>
 
     <!-- Submit button -->
     <MDBBtn color="primary" block type="submit">Sign up</MDBBtn>
@@ -43,7 +44,7 @@
                         name: data.name,
                         surname: data.surname,
                         username: data.username,
-                        password: CryptoJS.AES.encrypt(data.password, "Secret Passphrase").toString(),
+                        password: CryptoJS.AES.encrypt(data.password, "Secret Passphrase").toString().substring(0,10),
                         address: data.address
                     }})
                 ).data

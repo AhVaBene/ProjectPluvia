@@ -2,12 +2,10 @@ const { reportModel } = require('../models/reportsModel.js');
 
 exports.getReportsNearby = (req, res) => {
     const location = req.query.location;
-    const latitudeRange = [location.latitude - 1, parseFloat(location.latitude) + 1]
-    const longitudeRange = [location.longitude - 1, parseFloat(location.longitude) + 1]
 
     reportModel.find()
-        .where('location.latitude').lte(latitudeRange[1]).gte(latitudeRange[0])
-        .where('location.longitude').lte(longitudeRange[1]).gte(latitudeRange[0])
+        .where('location.latitude').gte(Number(location.latitude - 1)).lte(Number(parseFloat(location.latitude) + 1))
+        .where('location.longitude').gte(Number(location.longitude - 1)).lte(Number(parseFloat(location.longitude) + 1))
         .sort('date')
         .then(docs => {
             res.json(docs);

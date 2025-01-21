@@ -20,6 +20,7 @@ const imgClickedCallback = (srcImg: string) => {
 const onSuccess = async (position: { coords: any; }) => {
   const latitude: number = position.coords.latitude;
   const longitude: number = position.coords.longitude;
+  console.log("lat: " + latitude + ", long: " + longitude)
   try {
   const data = (await axios.get("http://localhost:3000/reports/home", {
     params: {
@@ -27,6 +28,7 @@ const onSuccess = async (position: { coords: any; }) => {
     }})
   ).data
   reports.value = data
+  console.log(data)
 } catch (e) {
   console.error(e)
 }

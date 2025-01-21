@@ -9,5 +9,6 @@ import { RouterView } from 'vue-router'
 <style>
 #app {
   font-family: Roboto, Helvetica, Arial, sans-serif;
+  padding: 0.2rem;
 }
 </style>

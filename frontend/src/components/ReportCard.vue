@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem } from 'mdb-vue-ui-kit';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem, mdbRipple } from 'mdb-vue-ui-kit';
 import { computed, ref } from 'vue';
 
 const activeItem = ref('');
+const vMdbRipple = mdbRipple
 
 const props = defineProps<{
     report: {
@@ -29,7 +30,9 @@ const fullAddress = computed(() => {
     return addr;
 })
 const reportDate = computed(() => new Date(props.report.date))
-const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-2 riskLevel" + props.report.riskLevel)
+const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-3 riskLevel" + props.report.riskLevel)
+
+const emits = defineEmits(["imgClicked"])
 </script>
 
 <template>
@@ -48,13 +51,15 @@ const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-2 riskLevel"
                     </MDBCardText>
                     <MDBCardText class="text-end">
                         <small class="text-muted">
-                            {{ ("0" + reportDate.getUTCHours()).slice(-2) + ":" + ("0" + reportDate.getUTCMinutes()).slice(-2) }}
+                            {{ ("0" + reportDate.getUTCHours()).slice(-2) + ":" + ("0" + reportDate.getUTCMinutes()).slice(-2) }} - 
                             {{ reportDate.getDate() + "/" + (reportDate.getMonth()+1) + "/" + reportDate.getFullYear() }}
                         </small>
                     </MDBCardText>
                 </div>
             </MDBCardBody>
-            <MDBCardImg bottom src="https://mdbootstrap.com/img/new/slides/041.webp" alt="..."/>
+            <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', 'https://mdbootstrap.com/img/new/slides/041.webp')">
+                <MDBCardImg bottom src="https://mdbootstrap.com/img/new/slides/041.webp" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
+            </a>
         </MDBCard>
     </MDBAccordionItem>
 </MDBAccordion>
@@ -63,6 +68,15 @@ const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-2 riskLevel"
 <style>
 .accordion-body {
     padding: 1%;
+}
+.card-body {
+    padding: 1rem;
+}
+.accordion-button {
+    padding: 1rem;
+}
+.ripple-surface {
+    cursor: pointer;
 }
 .riskLevel0 {
     color: gray;

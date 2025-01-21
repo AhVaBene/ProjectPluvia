@@ -28,18 +28,19 @@ async function isTokenValid(): Promise<Boolean> {
   }
 
   const decoded: string = await axios.get("http://localhost:3000/users/token/" + token).then(res => {
-    return res.data.username;
+    return res.data;
   }).catch(e => {
     console.log(e)
     return '';
   });
-    
+  
   return decoded == user;
 }
 
 router.beforeEach(async function (to, from) {
   const auth: Boolean = await isTokenValid();
-  console.log('beforeEach', to.path + ' - Auth: ' + localStorage.getItem('token') + " => " + auth)
+  console.log('beforeEach', "from: " + from.path + ", to: " + to.path + 
+    ' - Auth: ' + localStorage.getItem('token') + " for user " + localStorage.getItem('user') + " => " + auth)
   if ((to.path !== '/login' && to.path !== 'login') && !auth) {
     return { path: '/login' }
 

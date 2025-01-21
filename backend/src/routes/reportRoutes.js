@@ -2,14 +2,14 @@ const express = require('express');
 const reportRouter = express.Router();
 const reportController = require('../controllers/reportController');
 
-//router.route('/').get(reportController.getReportsNearby);
+reportRouter.route('/')
+    .get(reportController.getAllReports)
+    .post(reportController.createReport);
 
-reportRouter.route('/').get(reportController.getAllReports)
+reportRouter.route('/home')
+    .get(reportController.getReportsNearby);
 
-reportRouter.route('/createReport').post(reportController.createReport)
-
-reportRouter.route('/report/:id')
-    .get(reportController.getReportById)
+reportRouter.route('/:id')
     .put(reportController.updateReport)
     .delete(reportController.deleteReport)
 

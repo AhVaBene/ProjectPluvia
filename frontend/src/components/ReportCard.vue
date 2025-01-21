@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem } from 'mdb-vue-ui-kit';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem, mdbRipple, MDBCardFooter } from 'mdb-vue-ui-kit';
 import { computed, ref } from 'vue';
+import ReportCardFooterButton from './ReportCardFooterButton.vue';
+import axios from 'axios';
 
 const activeItem = ref('');
+const vMdbRipple = mdbRipple
+const dangerIcon = "fa fa-exclamation-circle fa-lg me-3 riskLevel"
 
 const props = defineProps<{
     report: {
@@ -29,7 +33,21 @@ const fullAddress = computed(() => {
     return addr;
 })
 const reportDate = computed(() => new Date(props.report.date))
-const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-2 riskLevel" + props.report.riskLevel)
+const iconClass = computed(() => dangerIcon + props.report.riskLevel)
+
+const emits = defineEmits(["imgClicked"])
+
+const onVerificationClick = async (riskLevel: number) => {
+    const newReport = props.report
+    newReport.riskLevel = riskLevel
+    const res = (await axios.put("http://localhost:3000/reports/" + props.report.id, {
+        data: {
+            riskLevel
+        }})
+    ).data
+    console.log(res)
+    console.log(props.report)
+}
 </script>
 
 <template>
@@ -48,13 +66,26 @@ const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-2 riskLevel"
                     </MDBCardText>
                     <MDBCardText class="text-end">
                         <small class="text-muted">
-                            {{ ("0" + reportDate.getUTCHours()).slice(-2) + ":" + ("0" + reportDate.getUTCMinutes()).slice(-2) }}
+                            {{ ("0" + reportDate.getUTCHours()).slice(-2) + ":" + ("0" + reportDate.getUTCMinutes()).slice(-2) }} - 
                             {{ reportDate.getDate() + "/" + (reportDate.getMonth()+1) + "/" + reportDate.getFullYear() }}
                         </small>
                     </MDBCardText>
                 </div>
             </MDBCardBody>
-            <MDBCardImg bottom src="https://mdbootstrap.com/img/new/slides/041.webp" alt="..."/>
+            <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', 'https://mdbootstrap.com/img/new/slides/041.webp')">
+                <MDBCardImg bottom src="https://mdbootstrap.com/img/new/slides/041.webp" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
+            </a>
+            <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0">
+                <div class="d-flex flex-column mb-3">
+                    Assign a risk level
+                    <div class="d-flex justify-content-between flex-row pt-2">
+                        <div class="item"><ReportCardFooterButton :riskLevel="1" @verificationClick="onVerificationClick"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="2" @verificationClick="onVerificationClick"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="3" @verificationClick="onVerificationClick"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="4" @verificationClick="onVerificationClick"/></div>
+                    </div>
+                </div>
+            </MDBCardFooter>
         </MDBCard>
     </MDBAccordionItem>
 </MDBAccordion>
@@ -64,16 +95,31 @@ const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-2 riskLevel"
 .accordion-body {
     padding: 1%;
 }
+.card-body {
+    padding: 1rem;
+}
+.card-footer {
+    padding: 0.5rem;
+}
+.accordion-button {
+    padding: 1rem;
+}
+.ripple-surface {
+    cursor: pointer;
+}
 .riskLevel0 {
     color: gray;
 }
 .riskLevel1 {
-    color: yellow;
+    color: rgb(238, 238, 0);
 }
 .riskLevel2 {
     color: orange;
 }
 .riskLevel3 {
     color: red;
+}
+.item{
+    flex: 1;
 }
 </style>

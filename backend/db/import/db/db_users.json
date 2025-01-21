@@ -1,1 +1,1 @@
-{"name": "Tizio", "surname": "Caio" ,"username": "User0", "password": "U2FsdGVkX1", "admin": "1", "indirizzi": [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": "44.14830115885112", "longitude": "12.235541253200406"}]}
+{"name": "Tizio", "surname": "Caio" ,"username": "User0", "password": "U2FsdGVkX1", "admin": 1, "indirizzi": [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": 44.14830115885112, "longitude": 12.235541253200406}]}

@@ -2,12 +2,10 @@ const { reportModel } = require('../models/reportsModel.js');
 
 exports.getReportsNearby = (req, res) => {
     const location = req.query.location;
-    const latitudeRange = [Number(location.latitude - 1), parseFloat(location.latitude) + 1]
-    const longitudeRange = [location.longitude - 1, parseFloat(location.longitude) + 1]
 
     reportModel.find()
-        //.where('location.latitude').lte(latitudeRange[1]).gte(latitudeRange[0])
-        //.where('location.longitude').lte(longitudeRange[1]).gte(latitudeRange[0])
+        .where('location.latitude').gte(Number(location.latitude - 1)).lte(Number(parseFloat(location.latitude) + 1))
+        .where('location.longitude').gte(Number(location.longitude - 1)).lte(Number(parseFloat(location.longitude) + 1))
         .sort('date')
         .then(docs => {
             res.json(docs);
@@ -39,11 +37,12 @@ exports.getOnlyVerifiedReports = (res) =>{
 }
 
 exports.updateReport = (req, res) => {
-    const { id } = req.params.id; // Get the report ID from the request parameters
-    const updateData = req.body; // Get the updated data from the request body
+    const filter = { id: req.params.id }; // Get the report ID from the request parameters
+    const updateData = req.body.data; // Get the updated data from the request body
+    console.log(updateData)
 
     reportModel
-        .findOneAndUpdate({ id }, updateData, { new: true }) // { new: true } returns the updated document
+        .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
         .then((updatedReport) => {
             if (!updatedReport) {
                 return res.status(404).send({ message: 'Report not found' });

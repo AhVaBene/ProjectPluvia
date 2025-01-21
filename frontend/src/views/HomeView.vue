@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import ReportCard from '@/components/ReportCard.vue';
+import { useUserStore } from '@/stores/user';
 
 const reports = ref([{
   id: String,
@@ -16,6 +17,8 @@ const reports = ref([{
   date: Date,
   username: String
 }]);
+let isUserAdmin: Boolean;
+const userStore = useUserStore();
 
 const onSuccess = async (position: { coords: any; }) => {
     const latitude: number = position.coords.latitude;
@@ -27,7 +30,6 @@ const onSuccess = async (position: { coords: any; }) => {
       }})
     ).data
     reports.value = data
-    console.log(data)
   } catch (e) {
     console.error(e)
   }
@@ -37,7 +39,12 @@ const error = (err: any) => {
     console.log(err)
 };
 
-const listReports = () => {
+async function getUserAdmin(): Promise<Boolean> {
+  return (await axios.get("http://localhost:3000/users/profile/" + userStore.user)).data.admin;
+}
+
+const listReports = async () => {
+  isUserAdmin = await getUserAdmin(); 
   navigator.geolocation.getCurrentPosition(onSuccess, error)
 }
 
@@ -48,7 +55,7 @@ onMounted(listReports)
   <section>
     <div class="row">
       <div class="col">
-        <ReportCard v-for="report in reports" :report="report" :key="report.id" />
+        <ReportCard v-for="report in reports" :report="report" :isUserAdmin="isUserAdmin" />
       </div>
     </div>
   </section>

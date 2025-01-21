@@ -49,7 +49,7 @@
                     }})
                 ).data
         
-                userStore.login(data.username, res.token, res.user.admin);
+                userStore.login(data.username, res.token);
                 router.push('/')
             } else {
                 registerError.value = true;

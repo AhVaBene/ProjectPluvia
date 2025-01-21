@@ -40,7 +40,7 @@ exports.login = (req, res) => {
                 return res.status(404).send('Wrong credentials');
             }
             const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
-            res.json({ token, user });
+            res.json({ token });
         })
         .catch(err => {
             res.status(500).send(err);

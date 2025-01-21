@@ -17,7 +17,8 @@ const props = defineProps<{
         riskLevel: Number,
         date: Date,
         username: String
-    }//any
+    }//any,
+    isUserAdmin: Boolean
 }>()
 
 const fullAddress = computed(() => {

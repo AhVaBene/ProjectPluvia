@@ -34,7 +34,7 @@ const login = async () => {
             }})
         ).data
 
-        userStore.login(data.username, res.token);
+        userStore.login(data.username, res.token, res.user.admin);
         router.push('/')
     } catch (err) {
         console.log("ERR: " + err)

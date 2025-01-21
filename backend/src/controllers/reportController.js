@@ -2,7 +2,7 @@ const { reportModel } = require('../models/reportsModel.js');
 
 exports.getReportsNearby = (req, res) => {
     const location = req.query.location;
-    const latitudeRange = [location.latitude - 1, parseFloat(location.latitude) + 1]
+    const latitudeRange = [Number(location.latitude - 1), parseFloat(location.latitude) + 1]
     const longitudeRange = [location.longitude - 1, parseFloat(location.longitude) + 1]
 
     reportModel.find()

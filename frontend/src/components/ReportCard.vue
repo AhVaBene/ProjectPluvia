@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem, mdbRipple } from 'mdb-vue-ui-kit';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem, mdbRipple, MDBCardFooter } from 'mdb-vue-ui-kit';
 import { computed, ref } from 'vue';
+import ReportCardFooterButton from './ReportCardFooterButton.vue';
 
 const activeItem = ref('');
 const vMdbRipple = mdbRipple
+const dangerIcon = "fa fa-exclamation-circle fa-lg me-3 riskLevel"
 
 const props = defineProps<{
     report: {
@@ -30,7 +32,7 @@ const fullAddress = computed(() => {
     return addr;
 })
 const reportDate = computed(() => new Date(props.report.date))
-const iconClass = computed(() => "fa fa-exclamation-circle fa-lg me-3 riskLevel" + props.report.riskLevel)
+const iconClass = computed(() => dangerIcon + props.report.riskLevel)
 
 const emits = defineEmits(["imgClicked"])
 </script>
@@ -60,6 +62,17 @@ const emits = defineEmits(["imgClicked"])
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', 'https://mdbootstrap.com/img/new/slides/041.webp')">
                 <MDBCardImg bottom src="https://mdbootstrap.com/img/new/slides/041.webp" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
             </a>
+            <MDBCardFooter v-if="props.report.riskLevel==0 && props.isUserAdmin">
+                <div class="d-flex flex-column mb-3">
+                    Assign a risk level
+                    <div class="d-flex justify-content-between flex-row pt-2">
+                        <div class="item"><ReportCardFooterButton :riskLevel="1"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="2"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="3"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="4"/></div>
+                    </div>
+                </div>
+            </MDBCardFooter>
         </MDBCard>
     </MDBAccordionItem>
 </MDBAccordion>
@@ -72,6 +85,9 @@ const emits = defineEmits(["imgClicked"])
 .card-body {
     padding: 1rem;
 }
+.card-footer {
+    padding: 0.5rem;
+}
 .accordion-button {
     padding: 1rem;
 }
@@ -82,12 +98,15 @@ const emits = defineEmits(["imgClicked"])
     color: gray;
 }
 .riskLevel1 {
-    color: yellow;
+    color: rgb(238, 238, 0);
 }
 .riskLevel2 {
     color: orange;
 }
 .riskLevel3 {
     color: red;
+}
+.item{
+    flex: 1;
 }
 </style>

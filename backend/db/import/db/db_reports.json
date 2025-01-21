@@ -1,1 +1,1 @@
-{"id": "0", "location": {"city": "Cesena", "address": "Via dell'Università 1", "latitude": "44.14830115885112", "longitude": "12.235541253200406"}, "pic": "link_pic", "riskLevel": "0", "date": "2025-01-01T04:00:00", "username": "User0"}
+{"id": "0", "location": {"city": "Cesena", "address": "Via dell'Università 1", "latitude": 44.14830115885112, "longitude": 12.235541253200406}, "pic": "link_pic", "riskLevel": 0, "date": "2025-01-01T04:00:00", "username": "User0"}

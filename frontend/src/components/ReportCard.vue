@@ -2,6 +2,7 @@
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordion, MDBAccordionItem, mdbRipple, MDBCardFooter } from 'mdb-vue-ui-kit';
 import { computed, ref } from 'vue';
 import ReportCardFooterButton from './ReportCardFooterButton.vue';
+import axios from 'axios';
 
 const activeItem = ref('');
 const vMdbRipple = mdbRipple
@@ -35,6 +36,18 @@ const reportDate = computed(() => new Date(props.report.date))
 const iconClass = computed(() => dangerIcon + props.report.riskLevel)
 
 const emits = defineEmits(["imgClicked"])
+
+const onVerificationClick = async (riskLevel: number) => {
+    const newReport = props.report
+    newReport.riskLevel = riskLevel
+    const res = (await axios.put("http://localhost:3000/reports/" + props.report.id, {
+        data: {
+            riskLevel
+        }})
+    ).data
+    console.log(res)
+    console.log(props.report)
+}
 </script>
 
 <template>
@@ -62,14 +75,14 @@ const emits = defineEmits(["imgClicked"])
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', 'https://mdbootstrap.com/img/new/slides/041.webp')">
                 <MDBCardImg bottom src="https://mdbootstrap.com/img/new/slides/041.webp" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
             </a>
-            <MDBCardFooter v-if="props.report.riskLevel==0 && props.isUserAdmin">
+            <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0">
                 <div class="d-flex flex-column mb-3">
                     Assign a risk level
                     <div class="d-flex justify-content-between flex-row pt-2">
-                        <div class="item"><ReportCardFooterButton :riskLevel="1"/></div>
-                        <div class="item"><ReportCardFooterButton :riskLevel="2"/></div>
-                        <div class="item"><ReportCardFooterButton :riskLevel="3"/></div>
-                        <div class="item"><ReportCardFooterButton :riskLevel="4"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="1" @verificationClick="onVerificationClick"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="2" @verificationClick="onVerificationClick"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="3" @verificationClick="onVerificationClick"/></div>
+                        <div class="item"><ReportCardFooterButton :riskLevel="4" @verificationClick="onVerificationClick"/></div>
                     </div>
                 </div>
             </MDBCardFooter>

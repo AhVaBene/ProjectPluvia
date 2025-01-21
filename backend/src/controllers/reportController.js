@@ -37,11 +37,12 @@ exports.getOnlyVerifiedReports = (res) =>{
 }
 
 exports.updateReport = (req, res) => {
-    const { id } = req.params.id; // Get the report ID from the request parameters
-    const updateData = req.body; // Get the updated data from the request body
+    const filter = { id: req.params.id }; // Get the report ID from the request parameters
+    const updateData = req.body.data; // Get the updated data from the request body
+    console.log(updateData)
 
     reportModel
-        .findOneAndUpdate({ id }, updateData, { new: true }) // { new: true } returns the updated document
+        .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
         .then((updatedReport) => {
             if (!updatedReport) {
                 return res.status(404).send({ message: 'Report not found' });

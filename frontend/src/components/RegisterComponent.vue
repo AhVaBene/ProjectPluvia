@@ -45,7 +45,8 @@
                         surname: data.surname,
                         username: data.username,
                         password: CryptoJS.AES.encrypt(data.password, "Secret Passphrase").toString().substring(0,10),
-                        address: data.address
+                        address: data.address,
+                        avatarPicture: 1
                     }})
                 ).data
         

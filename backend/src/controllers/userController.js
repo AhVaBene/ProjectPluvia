@@ -66,3 +66,21 @@ exports.register = (req, res) => {
             res.status(500).send(err);
         });
 }
+
+exports.updateIcon = (req, res) => {
+    const filter = { username: req.params.id }; // Get the User ID from the request parameters
+    const updateData = req.body.data; // Get the updated data from the request body
+    console.log(updateData)
+
+    userModel
+        .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
+        .then((updatedUser) => {
+            if (!updatedUser) {
+                return res.status(404).send({ message: 'User not found' });
+            }
+            res.json(updatedUser);
+        })
+        .catch((err) => {
+            res.status(500).send(err);
+        });
+}

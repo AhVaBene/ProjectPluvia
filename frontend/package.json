@@ -11,9 +11,11 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "0.9.72",
     "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "leaflet": "^1.9.4",
     "mdb-vue-ui-kit": "^6.0.0",
     "pinia": "^2.2.6",

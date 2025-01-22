@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import axios from 'axios';
+import MapView from '@/views/MapView.vue';
+import CreateView from '@/views/CreateView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,7 +16,17 @@ const router = createRouter({
     {
       path: "/login",
       name: "Login",
-      component: LoginView,
+      component: CreateView,
+    },
+    {
+      path:"/map",
+      name: "Map",
+      component: MapView,
+    },
+    {
+      path:"/createReport",
+      name:"CreateReport",
+      component: CreateView
     }
   ],
 })

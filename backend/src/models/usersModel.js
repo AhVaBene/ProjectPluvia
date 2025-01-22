@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
         latitude: Number,
         longitude: Number,
         }
-    ]
+    ],
+    avatarPicture: Number
 });
 
 const userModel = mongoose.model('User', userSchema)

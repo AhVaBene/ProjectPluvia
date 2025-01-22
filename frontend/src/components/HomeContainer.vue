@@ -51,7 +51,7 @@ onMounted(listReports)
 </script>
 
 <template>
-<section>
+<div class="col">
     <div class="bg-image">
         <div class="row">
             <div class="col">
@@ -64,5 +64,5 @@ onMounted(listReports)
         <ImageHighlightCard :imgPath="imgPath" @imgClicked="imgClickedCallback"/>
       </div>
     </div>
-</section>
+</div>
 </template>

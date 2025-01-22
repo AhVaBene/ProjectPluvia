@@ -1,19 +1,21 @@
 <template>
-<div class="text-center">
-    <img src="../assets/img/water.png"
-    style="width: 185px;" alt="logo">
-    <h1 class="mt-1 mb-5 pb-1">Pluvia</h1>
-</div>
-<LoginContainer v-if="isLogin"/>
-<RegisterComponent v-if="!isLogin"/>
+<div class="col">
+    <div class="text-center pt-4 mb-2">
+        <img src="../assets/img/water.png"
+        style="width: 185px;" alt="logo">
+        <h1 class="mt-1">Pluvia</h1>
+    </div>
+    <LoginContainer v-if="isLogin"/>
+    <RegisterComponent v-if="!isLogin"/>
 
-<!-- Switch to register button -->
-<div v-if="isLogin" class="text-center pt-2">
-    <p>Not a member? <a class="text-primary" @click="onClicked">Register</a></p>
-</div>
-<!-- Switch to login button -->
-<div v-if="!isLogin" class="text-center pt-2">
-    <p>Already have an account? <a class="text-primary" @click="onClicked">Login</a></p>
+    <!-- Switch to register button -->
+    <div v-if="isLogin" class="text-center pt-2">
+        <p>Not a member? <a class="text-primary" @click="onClicked">Register</a></p>
+    </div>
+    <!-- Switch to login button -->
+    <div v-if="!isLogin" class="text-center pt-2">
+        <p>Already have an account? <a class="text-primary" @click="onClicked">Login</a></p>
+    </div>
 </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="register">
+<form @submit.prevent="register" class="px-4">
     <p class="text-center">Create a new account</p>
     <!-- Name input -->
     <MDBInput required v-model="data.name" label="Name" id="name" wrapperClass="mb-3"/>
@@ -45,7 +45,8 @@
                         surname: data.surname,
                         username: data.username,
                         password: CryptoJS.AES.encrypt(data.password, "Secret Passphrase").toString().substring(0,10),
-                        address: data.address
+                        address: data.address,
+                        avatarPicture: 1
                     }})
                 ).data
         

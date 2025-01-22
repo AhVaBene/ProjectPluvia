@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import UserAvatar from './UserAvatar.vue';
+import router from '@/router';
 
 const user = ref({
     name: String,
@@ -48,6 +49,11 @@ const onModalClose = async (isSave: boolean) => {
     onAvatarClicked()
 }
 
+const onLogoutClick = () => {
+    userStore.logout()
+    router.push('/')
+}
+
 const getUser = async () => {
     try {
         const data = (await axios.get("http://localhost:3000/users/profile/" + userStore.user)).data
@@ -62,15 +68,34 @@ onMounted(getUser)
 </script>
 
 <template>
-<div class="d-flex align-items-center justify-content-center">
-    <div class="w-50 pt-3">
-        <UserAvatar :event="onAvatarClicked" :icon-number="user.avatarPicture" :iconSelected="0"/>
+<div class="col">
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="w-50 pt-3">
+            <UserAvatar :event="onAvatarClicked" :icon-number="user.avatarPicture" :iconSelected="0"/>
+        </div>
+    </div>
+
+    <div class="px-4 py-2">
+        <h1>{{ user.username }}</h1>
+        <h3>{{ user.name + " " + user.surname }}</h3>
+    </div>
+    <hr>
+    <div class="px-4 py-3">
+        <div v-for="location in user.locations">
+            <p>{{ location.address + ", " + location.city }}</p>
+        </div>
+        <div class="text-end">
+            <MDBBtn color="primary" rounded>Manage favorite locations</MDBBtn>
+        </div>
+    </div>
+    <hr>
+    <div class="d-grid gap-2 col-9 mx-auto py-3" @click="onLogoutClick">
+        <MDBBtn color="primary" rounded>Logout</MDBBtn>
     </div>
 </div>
-<h1>{{ user.username }}</h1>
-<div v-for="location in user.locations">
-    <h2>{{ location.address }}</h2>
-</div>
+
+
+
 <MDBModal
     id="avatarModal"
     labelledby="avatarModalLabel"
@@ -95,3 +120,14 @@ onMounted(getUser)
     </MDBModalFooter>
 </MDBModal>
 </template>
+
+<style>
+hr {
+  text-align:center;
+  margin: auto;
+  border: none;
+  height: 2px;
+  width: 70%;
+  background-color: black;  /* Modern Browsers */
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="login">
+    <form @submit.prevent="login" class="px-4">
     <p class="text-center">Please login to your account</p>
     <!-- Username input -->
     <MDBInput required v-model="data.username" label="Username" id="username" wrapperClass="mb-3" />

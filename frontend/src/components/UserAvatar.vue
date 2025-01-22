@@ -17,14 +17,12 @@ const selectedClass = computed(() => props.iconSelected == props.iconNumber ? 's
     :class="selectedClass"
     class="img-fluid"
     :src="iconPath"
+    style="border-radius: 50%;"
     />
 </a>
 </template>
 
 <style>
-img {
-  border-radius: 50%;
-}
 .selected {
     border: 5px solid #00fd04;
 }

@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="register">
+<form @submit.prevent="register" class="px-4">
     <p class="text-center">Create a new account</p>
     <!-- Name input -->
     <MDBInput required v-model="data.name" label="Name" id="name" wrapperClass="mb-3"/>

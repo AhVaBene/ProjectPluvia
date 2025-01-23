@@ -51,18 +51,16 @@ onMounted(listReports)
 </script>
 
 <template>
-<div class="col">
-  <div class="bg-image">
-    <div class="row">
-      <div class="col">
-        <ReportCard v-for="report in reports" :report="report" :isUserAdmin="isUserAdmin" @imgClicked="imgClickedCallback"/>
-      </div>
+<div class="bg-image">
+  <div class="row">
+    <div class="col">
+      <ReportCard v-for="report in reports" :report="report" :isUserAdmin="isUserAdmin" @imgClicked="imgClickedCallback" class="w-100"/>
     </div>
   </div>
-  <div class="mask" v-if="isImageClicked"  style="background-color: rgba(0, 0, 0, 0.6)">
-    <div class="d-flex justify-content-center align-items-center h-100">
-      <ImageHighlightCard :imgPath="imgPath" @imgClicked="imgClickedCallback"/>
-    </div>
+</div>
+<div class="mask" v-if="isImageClicked"  style="background-color: rgba(0, 0, 0, 0.6)">
+  <div class="d-flex justify-content-center align-items-center h-100">
+    <ImageHighlightCard :imgPath="imgPath" @imgClicked="imgClickedCallback"/>
   </div>
 </div>
 </template>

@@ -13,9 +13,10 @@ const topBarRoutes = ["/login"]
 
 <template>
 <TopBar v-if="!topBarRoutes.includes(routeName)"></TopBar>
-<div class="py-5">
+
+<main class="col-md-12">
   <RouterView />
-</div>
+</main>
 
 <BottomBar v-if="!bottomBarRoutes.includes(routeName)"></BottomBar>
 </template>

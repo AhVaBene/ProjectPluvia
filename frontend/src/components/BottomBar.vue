@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { MDBNavbar, MDBNavbarNav, MDBIcon, MDBNavbarItem } from 'mdb-vue-ui-kit';
+import { MDBNavbar, MDBNavbarNav, MDBIcon, MDBNavbarItem, MDBFooter } from 'mdb-vue-ui-kit';
 import { useRoute } from 'vue-router';
 
 // Icons array with default state (outlined version)
@@ -23,26 +23,35 @@ const routeName = computed(() => route.path)
 </script>
 
 <template>
-<MDBNavbar expand="lg" light bg="light" container position="bottom" class="border-top pt-1">
-  <MDBNavbarNav class="mx-auto">
-    <MDBNavbarItem to="/">
-      <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
-    </MDBNavbarItem>
-  </MDBNavbarNav>
-  <MDBNavbarNav class="mx-auto">
-    <MDBNavbarItem to="/map">
-      <MDBIcon :class="routeName=='/map' ? iconFillMapping.geoIcon : icons.geoIcon" size="lg" />
-    </MDBNavbarItem>
-  </MDBNavbarNav>
-  <MDBNavbarNav class="mx-auto">
-    <MDBNavbarItem to="/search">
-      <MDBIcon :class="routeName=='/search' ? iconFillMapping.searchIcon : icons.searchIcon" size="lg" />
-    </MDBNavbarItem>
-  </MDBNavbarNav>
-  <MDBNavbarNav class="mx-auto">
-    <MDBNavbarItem to="/createReport">
-      <MDBIcon :class="routeName=='/createReport' ? iconFillMapping.plusIcon : icons.plusIcon" size="lg" />
-    </MDBNavbarItem>
-  </MDBNavbarNav>
-</MDBNavbar>
+<div class="sticky-bottom">
+  <MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-top pt-1">
+    <MDBNavbarNav class="mx-auto">
+      <MDBNavbarItem to="/">
+        <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
+      </MDBNavbarItem>
+    </MDBNavbarNav>
+    <MDBNavbarNav class="mx-auto">
+      <MDBNavbarItem to="/map">
+        <MDBIcon :class="routeName=='/map' ? iconFillMapping.geoIcon : icons.geoIcon" size="lg" />
+      </MDBNavbarItem>
+    </MDBNavbarNav>
+    <MDBNavbarNav class="mx-auto">
+      <MDBNavbarItem to="/search">
+        <MDBIcon :class="routeName=='/search' ? iconFillMapping.searchIcon : icons.searchIcon" size="lg" />
+      </MDBNavbarItem>
+    </MDBNavbarNav>
+    <MDBNavbarNav class="mx-auto">
+      <MDBNavbarItem to="/createReport">
+        <MDBIcon :class="routeName=='/createReport' ? iconFillMapping.plusIcon : icons.plusIcon" size="lg" />
+      </MDBNavbarItem>
+    </MDBNavbarNav>
+  </MDBNavbar>
+</div>
 </template>
+
+<style>
+.sticky-bottom {
+  position: sticky !important;
+  bottom:0;
+}
+</style>

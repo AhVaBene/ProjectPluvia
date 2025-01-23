@@ -56,11 +56,12 @@ exports.register = (req, res) => {
         username: username,
         password: password,
         admin: 0,
-        avatarPicture: avatarPicture,
+        avatarPicture: 1,
         locations: [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": 44.14830115885112, "longitude": 12.235541253200406}] //TODO
     })
     newUser.save()
         .then(user => {
+            console.log(user)
             const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
             res.json({ token });
         })

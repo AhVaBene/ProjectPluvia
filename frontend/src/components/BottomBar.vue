@@ -51,7 +51,8 @@ const routeName = computed(() => route.path)
 
 <style>
 .sticky-bottom {
-  position: sticky !important;
+  position: fixed;
+  width:100%;
   bottom:0;
 }
 </style>

@@ -4,11 +4,13 @@ import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker } from 'vue-map-ui'
 import axios from 'axios';
 import type { LatLng, LatLngBounds, LatLngTuple } from 'leaflet';
 import type { ViewChangedEvent } from 'vue-use-leaflet';
+import { MDBFile, MDBBtn } from 'mdb-vue-ui-kit';
 
 const address = ref("via antonio samorì 10")
 const coordinates  = ref({lat:0,lng:0})
 
 const fetchGeocode = async () => {
+      //reverse geocoding even is usegul 
       const apiKey = "AIzaSyBp0zuqne1wsZMqJzo8cxpG8GLvGpg7_W8";
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
         address.value
@@ -54,24 +56,48 @@ function onViewChanged(e: ViewChangedEvent) {
   bounds.value = e.bounds;
 }
 
+const file1 = ref(null)
+
+
+const onSuccess = async (position: { coords: any; }) => {
+  const latitude: number = position.coords.latitude;
+  const longitude: number = position.coords.longitude;
+  coordinates.value.lat = latitude
+  coordinates.value.lng = longitude
+}
+
+const error = (err: any) => {
+    console.log(err)
+};
+
+const geolocateme = async () => {
+  navigator.geolocation.getCurrentPosition(onSuccess, error)
+}
+
+const movedMarker = (e)=>{
+  console.log(e)
+  coordinates.value = e.latlng
+  console.log(coordinates.value)
+}
+
+const sendReport = ()=>{}
 </script>
 
 <template>
 <div class="content">
-    <label class="custom-file-upload ">
-    <input type="file" @change="handleFileUpload" accept="image/*"/>
-    Custom Upload
-</label>
+<MDBFile label="Image" class="custom-file-upload" @change="handleFileUpload" />
 <div v-if="uploadedImage" class="image-preview">
       <img :src="uploadedImage" alt="Uploaded Image" />
     </div>
-    <div class="custom-file-upload"  @click="fetchGeocode">Current position</div>
-    <GMapAutocomplete
-       @place_changed="setAddress"
-       placeholder="Address or  Pincode">
-    </GMapAutocomplete>
-    <button @click="fetchGeocode">Locate</button>
-    <button>Use my position</button>
+    <div class="d-flex justify-content-center align-items-center mt-5 mb-2">
+      <GMapAutocomplete
+        @place_changed="setAddress"
+        class="form-control"
+        placeholder="Address or  Pincode">
+      </GMapAutocomplete>
+      <MDBBtn color="primary" rounded  @click="fetchGeocode">Locate</MDBBtn>
+      <MDBBtn color="primary" rounded @click="geolocateme">geolocate me</MDBBtn>
+  </div>
 </div>
 <div class="flex flex-col w-full h-full">
     <div class="flex-grow basis-full">
@@ -79,39 +105,30 @@ function onViewChanged(e: ViewChangedEvent) {
         <VMapOsmTileLayer />
         <VMapZoomControl />
         <VMapAttributionControl />
-        <VMapMarker :latlng="[coordinates.lat, coordinates.lng]" :draggable="true"/>
+        <VMapMarker :latlng="[coordinates.lat, coordinates.lng]" :draggable="true" @move="movedMarker"/>
       </VMap>
     </div>
-    {{console.log(coordinates)}}
-    {{console.log(coordinates.lat)}}
-    <!-- <div class="px-1 pt-3 flex-shrink-0 text-sm overflow-hidden">
-      center: {{ center }}, zoom: {{ zoom }}, bounds: {{ bounds }}
-    </div> -->
   </div>
-<button>Send</button>
+  <div class="d-flex justify-content-center align-items-center mt-3">
+    <MDBBtn color="primary" rounded>sent</MDBBtn>
+  </div>
 </template>
 
 <style>
-input[type="file"] {
-  display: none;
-}
 
 .content{
     margin-top: 4.8em;
     margin-right: 0;
     margin-left: 0;
-    background-color: #242424;
 }
 
 .custom-file-upload {
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #242424;
   /* display: inline-block; Ensures it behaves as a block element */
   width: 100%; /* Takes the full width */
   padding: 10px 12px;
   cursor: pointer;
   text-align: center;
-  background-color: #242424; /* Slightly lighter background for contrast */
-  color: white;
   margin:0;
 }
 </style>

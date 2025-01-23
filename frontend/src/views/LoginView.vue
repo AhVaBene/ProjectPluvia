@@ -1,8 +1,8 @@
 <template>
 <div class="col">
     <div class="text-center pt-4 mb-2">
-        <img src="../assets/img/water.png"
-        style="width: 185px;" alt="logo">
+        <img src="../assets/img/water.png" class="img-fluid"
+        style="width: 185px;display: inline;" alt="Pluvia logo">
         <h1 class="mt-1">Pluvia</h1>
     </div>
     <LoginContainer v-if="isLogin"/>

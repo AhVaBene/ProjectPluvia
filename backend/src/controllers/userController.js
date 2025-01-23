@@ -48,14 +48,16 @@ exports.login = (req, res) => {
 }
 
 exports.register = (req, res) => {
-    const { name, surname, username, password, address } = req.query;
+    const { name, surname, username, password, avatarPicture, locations } = req.body.params;
+    console.log(req.body.params)
     const newUser = new userModel({
         name: name,
         surname: surname,
         username: username,
         password: password,
         admin: 0,
-        address: address //TODO
+        avatarPicture: avatarPicture,
+        locations: [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": 44.14830115885112, "longitude": 12.235541253200406}] //TODO
     })
     newUser.save()
         .then(user => {

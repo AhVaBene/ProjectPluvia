@@ -2,19 +2,19 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import ReportCard from '@/components/ReportCard.vue';
-import ImageHighlightCard from '@/components/ImageHighlightCard.vue'
 import { useUserStore } from '@/stores/user';
+import { MDBModal, MDBModalHeader, MDBModalTitle, MDBModalBody } from 'mdb-vue-ui-kit'
 
 const userStore = useUserStore();
 
 const reports = ref();
-const isImageClicked = ref<Boolean>(false);
+const avatarModal = ref<boolean>(false)
 const isUserAdmin = ref<Boolean>(false);
 const imgPath = ref<String>("")
 
 const imgClickedCallback = (srcImg: string) => {
   imgPath.value = srcImg
-  isImageClicked.value = !isImageClicked.value
+  avatarModal.value = !avatarModal.value
 }
 
 const onSuccess = async (position: { coords: any; }) => {
@@ -58,9 +58,17 @@ onMounted(listReports)
     </div>
   </div>
 </div>
-<div class="mask" v-if="isImageClicked"  style="background-color: rgba(0, 0, 0, 0.6)">
-  <div class="d-flex justify-content-center align-items-center h-100">
-    <ImageHighlightCard :imgPath="imgPath" @imgClicked="imgClickedCallback"/>
-  </div>
-</div>
+<MDBModal
+    id="imgModal"
+    labelledby="imgModalLabel"
+    v-model="avatarModal"
+    centered size="xl"
+  >
+    <MDBModalHeader>
+    </MDBModalHeader>
+    <MDBModalBody>
+      <img :src="imgPath" alt="Report image at fullscreen" />
+    </MDBModalBody>
+</MDBModal>
+
 </template>

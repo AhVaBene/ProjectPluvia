@@ -92,8 +92,6 @@ onMounted(getUser)
     <MDBBtn color="primary" rounded>Logout</MDBBtn>
 </div>
 
-
-
 <MDBModal
     id="avatarModal"
     labelledby="avatarModalLabel"

@@ -6,7 +6,7 @@ userRouter.route('/login')
     .get(userController.login);
 
 userRouter.route('/register')
-    .get(userController.register);
+    .post(userController.register);
 
 userRouter.route('/token/:id')
     .get(userController.getUserbyToken);

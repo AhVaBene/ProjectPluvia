@@ -49,7 +49,7 @@ exports.login = (req, res) => {
 
 exports.register = (req, res) => {
     const { name, surname, username, password, avatarPicture, locations } = req.body.params;
-    console.log(req.body.params)
+
     const newUser = new userModel({
         name: name,
         surname: surname,

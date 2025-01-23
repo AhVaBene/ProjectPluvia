@@ -82,3 +82,32 @@ exports.createReport = (req, res) => {
         res.status(500).send(err);
       });
 };
+
+exports.getNotifications = (req, res) =>  {
+    const locations = req.query.locations;
+    const reports = [] //da cambiare in set(?)
+    var query = new Promise((resolve, reject) => {
+        locations.forEach((e, index, array) => {
+            reportModel.find()
+                .where('location.latitude').gte(Number(e.latitude - 1)).lte(Number(parseFloat(e.latitude) + 1))
+                .where('location.longitude').gte(Number(e.longitude - 1)).lte(Number(parseFloat(e.longitude) + 1))
+                .then(docs => {
+                    console.log("DOCS:",docs)
+                    docs.forEach(r => reports.push(r))
+                    if (index === array.length -1) resolve();
+                })
+                .catch(err => {
+                    return res.status(500).send(err);
+                });
+        });
+    })
+    query.then(() => {
+        var result = reports.reduce((unique, o) => {
+            if(!unique.some(obj => obj.id === o.id)) {
+              unique.push(o);
+            }
+            return unique;
+        },[]);
+        res.json(result)
+    })
+}

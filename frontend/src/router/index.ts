@@ -69,7 +69,7 @@ async function isTokenValid(): Promise<Boolean> {
 router.beforeEach(async function (to, from) {
   const auth: Boolean = await isTokenValid();
   console.log('beforeEach', "from: " + from.path + ", to: " + to.path + 
-    ' - Auth: ' + localStorage.getItem('token') + " for user " + localStorage.getItem('user') + " => " + auth)
+    ' - Auth: ' + localStorage.getItem('user') + " => " + auth)
   if ((to.path !== '/login' && to.path !== 'login') && !auth) {
     return { path: '/login' }
 

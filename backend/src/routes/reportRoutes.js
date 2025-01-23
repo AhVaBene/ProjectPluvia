@@ -9,6 +9,9 @@ reportRouter.route('/')
 reportRouter.route('/home')
     .get(reportController.getReportsNearby);
 
+reportRouter.route('/notifications')
+    .get(reportController.getNotifications)
+
 reportRouter.route('/:id')
     .put(reportController.updateReport)
     .delete(reportController.deleteReport)

@@ -5,6 +5,7 @@ import axios from 'axios';
 import ProfileView from '@/views/ProfileView.vue';
 import MapView from '@/views/MapView.vue';
 import CreateView from '@/views/CreateView.vue';
+import NotificationsView from '@/views/NotificationsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +19,31 @@ const router = createRouter({
       path: "/login",
       name: "Login",
       component: LoginView,
+    },
+    {
+      path: "/profile",
+      name: "Profile",
+      component: ProfileView,
+    },
+    {
+      path: "/map",
+      name: "Map",
+      component: MapView,
+    },
+    {
+      path: "/createReport",
+      name: "CreateReport",
+      component: CreateView,
+    },
+    {
+      path: "/search",
+      name: "Search",
+      component: HomeView,
+    },
+    {
+      path: "/notifications",
+      name: "Notifications",
+      component: NotificationsView,
     }
   ],
 })

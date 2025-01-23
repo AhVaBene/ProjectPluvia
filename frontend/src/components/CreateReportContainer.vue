@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import BottomBar from './BottomBar.vue';
-import TopBar from './TopBar.vue';
 import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker } from 'vue-map-ui';
 import axios from 'axios';
-
+import type { LatLng, LatLngBounds, LatLngTuple } from 'leaflet';
+import type { ViewChangedEvent } from 'vue-use-leaflet';
 
 const address = ref("via antonio samorì 10")
 const coordinates  = ref({lat:0,lng:0})
@@ -35,7 +34,6 @@ const setAddress = (e)=>{
     address.value = e.name
 }
 
-
 const uploadedImage = ref<string | null>(null);
 // Function to handle file selection
 function handleFileUpload(event: Event) {
@@ -45,9 +43,6 @@ function handleFileUpload(event: Event) {
     uploadedImage.value = URL.createObjectURL(file); // Create a URL for the uploaded file
   }
 }
-
-import type { LatLng, LatLngBounds, LatLngTuple } from 'leaflet';
-import type { ViewChangedEvent } from 'vue-use-leaflet';
 
 const center = ref<LatLngTuple | LatLng>([0, 0]);
 const zoom = ref(0);
@@ -62,7 +57,6 @@ function onViewChanged(e: ViewChangedEvent) {
 </script>
 
 <template>
-<TopBar/>
 <div class="content">
     <label class="custom-file-upload ">
     <input type="file" @change="handleFileUpload" accept="image/*"/>
@@ -96,18 +90,11 @@ function onViewChanged(e: ViewChangedEvent) {
     </div> -->
   </div>
 <button>Send</button>
-<BottomBar/>
 </template>
 
 <style>
 input[type="file"] {
   display: none;
-}
-
-body{
-    padding:0;
-    margin: 0;
-    background-color: #242424;
 }
 
 .content{

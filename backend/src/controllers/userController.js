@@ -32,12 +32,13 @@ exports.getUserbyToken = (req, res) => {
 
 exports.login = (req, res) => {
     const { username, password } = req.query;
+    console.log(username, password)
     userModel.findOne()
         .where('username').equals(username)
         .where('password').equals(password)
         .then(user => {
             if (!user) {
-                return res.status(404).send('Wrong credentials');
+                return res.status(500).send('Wrong credentials');
             }
             const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
             res.json({ token });
@@ -48,7 +49,7 @@ exports.login = (req, res) => {
 }
 
 exports.register = (req, res) => {
-    const { name, surname, username, password, address } = req.query;
+    const { name, surname, username, password, address } = req.body.params;
     const newUser = new userModel({
         name: name,
         surname: surname,
@@ -71,7 +72,7 @@ exports.updateIcon = (req, res) => {
     const filter = { username: req.params.id }; // Get the User ID from the request parameters
     const updateData = req.body.data; // Get the updated data from the request body
     console.log(updateData)
-
+    console.log(userModel.collection('users').find().toArray())
     userModel
         .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
         .then((updatedUser) => {

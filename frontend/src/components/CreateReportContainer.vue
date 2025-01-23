@@ -73,7 +73,6 @@ function onViewChanged(e: ViewChangedEvent) {
     <button @click="fetchGeocode">Locate</button>
     <button>Use my position</button>
 </div>
-  <p v-for="(m, index) in markers">{{m.position.lat}}</p>
 <div class="flex flex-col w-full h-full">
     <div class="flex-grow basis-full">
       <VMap :center="center" :zoom="zoom" @view-changed="onViewChanged" style="width: 100%;height:20em;">

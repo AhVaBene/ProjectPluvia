@@ -11,7 +11,7 @@ const secondaryTopBarRoutes = ["/notifications", "/profile"]
 </script>
 
 <template>
-<MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-bottom pb-1">
+<MDBNavbar expand="lg" light bg="light" container position="top" class="border-bottom pb-1">
   <MDBNavbarNav left class="mx-2">
     
     <MDBNavbarItem v-if="!secondaryTopBarRoutes.includes(routeName)" to="/notifications" active >

@@ -2,12 +2,21 @@
 import { computed, onMounted, ref } from 'vue';
 import { MDBNavbar, MDBNavbarItem, MDBNavbarNav, MDBIcon, MDBBadge } from 'mdb-vue-ui-kit';
 import { useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user';
+import axios from 'axios';
 
-const notifications = ref(0);
+const userStore = useUserStore();
 const route = useRoute();
 const routeName = computed(() => route.path)
 
-const secondaryTopBarRoutes = ["/notifications", "/profile"]
+const secondaryTopBarRoutes: [string, string] = ["/notifications", "/profile"]
+
+const getNotifications = async () => {
+  const res = (await axios.get("http://localhost:3000/reports/notifications/")).data;
+  console.log(res.count())
+}
+
+setInterval(getNotifications, 90000);
 </script>
 
 <template>
@@ -16,7 +25,7 @@ const secondaryTopBarRoutes = ["/notifications", "/profile"]
     
     <MDBNavbarItem v-if="!secondaryTopBarRoutes.includes(routeName)" to="/notifications" active >
       <MDBIcon icon="bell" size="lg" />
-      <MDBBadge pill notification badge="danger">{{ notifications }}</MDBBadge>
+      <MDBBadge pill notification badge="danger">{{ userStore.notifications }}</MDBBadge>
     </MDBNavbarItem>
 
     <MDBNavbarItem to="/" active v-else>

@@ -28,7 +28,7 @@ const onSuccess = async (position: { coords: any; }) => {
     }})
   ).data
   reports.value = data
-  console.log(data)
+
 } catch (e) {
   console.error(e)
 }
@@ -51,11 +51,9 @@ onMounted(listReports)
 </script>
 
 <template>
-<div class="bg-image">
-  <div class="row">
-    <div class="col">
-      <ReportCard v-for="report in reports" :report="report" :isUserAdmin="isUserAdmin" @imgClicked="imgClickedCallback" class="w-100"/>
-    </div>
+<div class="row">
+  <div class="col">
+    <ReportCard v-for="report in reports" :report="report" :isUserAdmin="isUserAdmin" @imgClicked="imgClickedCallback" class="w-100"/>
   </div>
 </div>
 <MDBModal
@@ -70,5 +68,4 @@ onMounted(listReports)
       <img :src="imgPath" alt="Report image at fullscreen" />
     </MDBModalBody>
 </MDBModal>
-
 </template>

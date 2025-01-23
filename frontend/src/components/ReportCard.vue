@@ -73,7 +73,7 @@ const onVerificationClick = async (riskLevel: number) => {
                 </div>
             </MDBCardBody>
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', props.report.pic)">
-                <MDBCardImg bottom v-bind:src="props.report.pic" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
+                <MDBCardImg class="max-w-50" bottom v-bind:src="props.report.pic.toString()" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
             </a>
             <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0">
                 <div class="d-flex flex-column mb-3">
@@ -92,6 +92,9 @@ const onVerificationClick = async (riskLevel: number) => {
 </template>
 
 <style>
+#MDBAccordion {
+    width: 50%;
+}
 .accordion-body {
     padding: 1%;
 }

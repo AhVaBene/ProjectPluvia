@@ -56,7 +56,8 @@ exports.register = (req, res) => {
         username: username,
         password: password,
         admin: 0,
-        address: address //TODO
+        avatarPicture: avatarPicture,
+        locations: [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": 44.14830115885112, "longitude": 12.235541253200406}] //TODO
     })
     newUser.save()
         .then(user => {

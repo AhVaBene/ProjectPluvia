@@ -37,18 +37,20 @@
     
     const register = async () => {
         const isUsernameAvailabile: Boolean = await axios.get("http://localhost:3000/users/profile/" + data.username).then(() => false).catch(() => true)
+        const params = {
+            name: data.name,
+            surname: data.surname,
+            username: data.username,
+            password: CryptoJS.SHA3(data.password).toString(),
+            locations: data.address,
+            avatarPicture: 1
+        }
+        console.log(params)
         try{
             if(isUsernameAvailabile) {
                 const res = (await axios.post("http://localhost:3000/users/register", {
-                    params: {
-                        name: data.name,
-                        surname: data.surname,
-                        username: data.username,
-                        password: CryptoJS.AES.encrypt(data.password, "Secret Passphrase").toString().substring(0,10),
-                        address: data.address,
-                        avatarPicture: 1
-                    }})
-                ).data
+                    params: params
+                })).data
         
                 userStore.login(data.username, res.token);
                 router.push('/')

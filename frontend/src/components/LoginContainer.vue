@@ -30,7 +30,7 @@ const login = async () => {
         const res = (await axios.get("http://localhost:3000/users/login", {
             params: {
                 username: data.username,
-                password: CryptoJS.AES.encrypt(data.password, "Secret Passphrase").toString().substring(0,10)
+                password: CryptoJS.SHA3(data.password)
             }})
         ).data
 

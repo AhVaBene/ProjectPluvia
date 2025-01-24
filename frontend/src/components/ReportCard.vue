@@ -21,7 +21,7 @@ const props = defineProps<{
         riskLevel: Number,
         date: Date,
         username: String
-    }//any,
+    },
     isUserAdmin: Boolean
 }>()
 

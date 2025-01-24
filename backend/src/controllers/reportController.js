@@ -6,7 +6,7 @@ exports.getReportsNearby = (req, res) => {
     reportModel.find()
         .where('location.latitude').gte(Number(location.latitude - 1)).lte(Number(parseFloat(location.latitude) + 1))
         .where('location.longitude').gte(Number(location.longitude - 1)).lte(Number(parseFloat(location.longitude) + 1))
-        .sort('date')
+        .sort('-date')
         .then(docs => {
             res.json(docs);
         })
@@ -86,11 +86,19 @@ exports.createReport = (req, res) => {
 exports.getNotifications = (req, res) =>  {
     const locations = req.query.locations;
     const reports = [] //da cambiare in set(?)
+
+    const currentDate = new Date();
+    var yesterday = new Date(currentDate);
+    yesterday.setDate(currentDate.getDate() - 1);
+
     var query = new Promise((resolve, reject) => {
         locations.forEach((e, index, array) => {
             reportModel.find()
+                .where('date').gte(yesterday).lte(currentDate)
+                //.where('riskLeve').gte(2)
                 .where('location.latitude').gte(Number(e.latitude - 1)).lte(Number(parseFloat(e.latitude) + 1))
                 .where('location.longitude').gte(Number(e.longitude - 1)).lte(Number(parseFloat(e.longitude) + 1))
+                .sort('-date')
                 .then(docs => {
                     docs.forEach(r => reports.push(r))
                     if (index === array.length -1) resolve();
@@ -100,6 +108,7 @@ exports.getNotifications = (req, res) =>  {
                 });
         });
     })
+
     query.then(() => {
         var result = reports.reduce((unique, o) => {
             if(!unique.some(obj => obj.id === o.id)) {

@@ -23,9 +23,9 @@ const routeName = computed(() => route.path)
 </script>
 
 <template>
-<div class="sticky-bottom">
+<div class="">
   <div class="col-md-12">
-    <MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-top pt-1">
+    <MDBNavbar expand="lg" light bg="light" container position="sticky-bottom" class="border-top pt-1">
     <MDBNavbarNav class="mx-auto">
       <MDBNavbarItem to="/">
         <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
@@ -48,14 +48,12 @@ const routeName = computed(() => route.path)
     </MDBNavbarNav>
   </MDBNavbar>
   </div>
-  
 </div>
 </template>
 
 <style>
 .sticky-bottom {
   position: fixed;
-  width:100%;
   bottom:0;
 }
 </style>

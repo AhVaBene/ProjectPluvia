@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useReportsStore } from '@/stores/reports';
+import router from '@/router';
 
 const userStore = useUserStore();
 const reportStore = useReportsStore();
@@ -63,7 +64,7 @@ onMounted(getNotifications)
       <MDBBadge pill notification badge="danger">{{ userStore.notifications }}</MDBBadge>
     </MDBNavbarItem>
 
-    <MDBNavbarItem to="/" active v-else>
+    <MDBNavbarItem @click="router.go(-1)" active v-else>
       <MDBIcon class="fa fa-arrow-left" size="lg" />
     </MDBNavbarItem>
 

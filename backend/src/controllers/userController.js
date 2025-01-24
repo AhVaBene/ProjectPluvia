@@ -49,12 +49,8 @@ exports.login = (req, res) => {
 }
 
 exports.register = (req, res) => {
-<<<<<<< HEAD
-    const { name, surname, username, password, address } = req.body.params;
-=======
     const { name, surname, username, password, avatarPicture, locations } = req.body.params;
 
->>>>>>> 289bf2581c7ee5c63c36db7b5237e5a9b2744af0
     const newUser = new userModel({
         name: name,
         surname: surname,
@@ -78,8 +74,7 @@ exports.register = (req, res) => {
 exports.updateIcon = (req, res) => {
     const filter = { username: req.params.id }; // Get the User ID from the request parameters
     const updateData = req.body.data; // Get the updated data from the request body
-    console.log(updateData)
-    console.log(userModel.collection('users').find().toArray())
+
     userModel
         .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
         .then((updatedUser) => {

@@ -92,7 +92,6 @@ exports.getNotifications = (req, res) =>  {
                 .where('location.latitude').gte(Number(e.latitude - 1)).lte(Number(parseFloat(e.latitude) + 1))
                 .where('location.longitude').gte(Number(e.longitude - 1)).lte(Number(parseFloat(e.longitude) + 1))
                 .then(docs => {
-                    console.log("DOCS:",docs)
                     docs.forEach(r => reports.push(r))
                     if (index === array.length -1) resolve();
                 })

@@ -52,7 +52,7 @@ onMounted(listReports)
 </script>
 
 <template>
-<div class="row">
+<div class="row pb-5">
   <div class="col">
     <ReportCard v-for="report in reports" :report="report" :isUserAdmin="isUserAdmin" @imgClicked="imgClickedCallback" class="w-100"/>
   </div>

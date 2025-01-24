@@ -1,9 +1,13 @@
 const { reportModel } = require('../models/reportsModel.js');
 
 exports.getReportsNearby = (req, res) => {
+    console.log(req)
     const location = req.query.location;
+    const minRiskLevel = req.query.isAdmin ? 0 : 1
 
+    console.log(minRiskLevel)
     reportModel.find()
+        .where('riskLevel').gte(minRiskLevel)
         .where('location.latitude').gte(Number(location.latitude - 1)).lte(Number(parseFloat(location.latitude) + 1))
         .where('location.longitude').gte(Number(location.longitude - 1)).lte(Number(parseFloat(location.longitude) + 1))
         .sort('-date')

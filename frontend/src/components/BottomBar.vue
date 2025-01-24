@@ -25,7 +25,7 @@ const routeName = computed(() => route.path)
 <template>
 <div class="">
   <div class="col-md-12">
-    <MDBNavbar expand="lg" light bg="light" container position="sticky-bottom" class="border-top pt-1">
+    <MDBNavbar expand="lg" light bg="light" container position="bottom" class="border-top pt-1">
     <MDBNavbarNav class="mx-auto">
       <MDBNavbarItem to="/">
         <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />

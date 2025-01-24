@@ -24,7 +24,8 @@ const onSuccess = async (position: { coords: any; }) => {
   try {
   const data = (await axios.get("http://localhost:3000/reports/home", {
     params: {
-        location: { latitude: latitude, longitude: longitude }
+        location: { latitude: latitude, longitude: longitude },
+        isAdmin: isUserAdmin
     }})
   ).data
   reports.value = data

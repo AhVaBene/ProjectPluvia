@@ -44,7 +44,7 @@ const onModalClose = async (isSave: boolean) => {
         ).data
         user.value = res
     } else {
-        selectedIcon.value = user.value.avatarPicture
+        selectedIcon.value = user.value.avatarPicture as unknown as number
     }
     onAvatarClicked()
 }

@@ -13,7 +13,7 @@
     <MDBModalHeader>
     </MDBModalHeader>
     <MDBModalBody>
-      <img :src="imgPath" alt="Report image at fullscreen" />
+      <img :src="imgPath.toString()" alt="Report image at fullscreen" />
     </MDBModalBody>
 </MDBModal>
 </template>
@@ -27,7 +27,19 @@ import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 
-const reports = ref();
+const reports = ref<[{
+    id: String,
+    location: {
+        city: String,
+        address: String,
+        latitude: Number,
+        longitude: Number,
+        },
+    pic: String,
+    riskLevel: Number,
+    date: Date,
+    username: String
+}]>();
 const imgModal = ref<boolean>(false)
 const imgPath = ref<String>("")
 const favoriteLocations: {latitude: Number, longitude: Number}[] = []

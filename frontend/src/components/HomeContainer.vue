@@ -65,7 +65,7 @@ onMounted(listReports)
     <MDBModalHeader>
     </MDBModalHeader>
     <MDBModalBody>
-      <img :src="imgPath" alt="Report image at fullscreen" />
+      <img :src="imgPath.toString()" alt="Report image at fullscreen" />
     </MDBModalBody>
 </MDBModal>
 </template>

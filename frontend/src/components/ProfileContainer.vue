@@ -129,7 +129,7 @@ onMounted(getUser)
             </GMapAutocomplete>
             
             <MDBBtn v-if="index==user.locations.length-1 && index!=0" color="danger" @click="deleteLocation(index)">
-                <MDBIcon icon="trash-alt"></MDBIcon>
+                <MDBIcon icon="trash-alt" size="lg"></MDBIcon>
             </MDBBtn>
         </div>
 

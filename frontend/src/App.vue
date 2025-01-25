@@ -3,22 +3,25 @@ import { RouterView, useRoute } from 'vue-router'
 import BottomBar from './components/BottomBar.vue';
 import TopBar from './components/TopBar.vue';
 import { computed } from 'vue';
+import { useUserStore } from './stores/user';
 
 const route = useRoute();
-const routeName = computed(() => route.path)
+const userStore = useUserStore();
+
+const routeName = computed<string>(() => route.path)
 
 const bottomBarRoutes = ["/login", "/notifications", "/profile"]
 const topBarRoutes = ["/login"]
 </script>
 
 <template>
-<TopBar v-if="!topBarRoutes.includes(routeName)"></TopBar>
+<TopBar v-if="!topBarRoutes.includes(routeName) && userStore.token"></TopBar>
 
 <main class="col-md-12">
   <RouterView />
 </main>
 
-<BottomBar v-if="!bottomBarRoutes.includes(routeName)"></BottomBar>
+<BottomBar v-if="!bottomBarRoutes.includes(routeName) && userStore.token"></BottomBar>
 </template>
 
 <style>

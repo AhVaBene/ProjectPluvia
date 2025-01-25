@@ -24,42 +24,42 @@
 </template>
 
 <script setup lang="ts">
-    import { MDBInput, MDBBtn } from 'mdb-vue-ui-kit';
-    import { useUserStore } from '@/stores/user';
-    import  router  from '@/router/'
-    import axios from 'axios';
-    import { ref, reactive } from 'vue';
-    import CryptoJS from 'crypto-js'
+import { MDBInput, MDBBtn } from 'mdb-vue-ui-kit';
+import { useUserStore } from '@/stores/user';
+import  router  from '@/router/'
+import axios from 'axios';
+import { ref, reactive } from 'vue';
+import CryptoJS from 'crypto-js'
+
+const registerError = ref<Boolean>(false);
+const data = reactive( { name: "", surname: "", username: "", password: "", address: "" } );
+const userStore = useUserStore();
+
+async function register(): Promise<void> {
+    const isUsernameAvailabile: Boolean = await axios.get("http://localhost:3000/users/profile/" + data.username).then(() => false).catch(() => true)
+    const params = {
+        name: data.name,
+        surname: data.surname,
+        username: data.username,
+        password: CryptoJS.SHA3(data.password).toString(),
+        locations: data.address,
+        avatarPicture: 1
+    }
+    console.log(params)
+    try{
+        if(isUsernameAvailabile) {
+            const res = (await axios.post("http://localhost:3000/users/register", {
+                params: params
+            })).data
     
-    const registerError = ref<Boolean>(false);
-    const data = reactive( { name: "", surname: "", username: "", password: "", address: "" } );
-    const userStore = useUserStore();
-    
-    const register = async () => {
-        const isUsernameAvailabile: Boolean = await axios.get("http://localhost:3000/users/profile/" + data.username).then(() => false).catch(() => true)
-        const params = {
-            name: data.name,
-            surname: data.surname,
-            username: data.username,
-            password: CryptoJS.SHA3(data.password).toString(),
-            locations: data.address,
-            avatarPicture: 1
-        }
-        console.log(params)
-        try{
-            if(isUsernameAvailabile) {
-                const res = (await axios.post("http://localhost:3000/users/register", {
-                    params: params
-                })).data
-        
-                userStore.login(data.username, res.token);
-                router.push('/')
-            } else {
-                registerError.value = true;
-            }
-        } catch (err) {
-            console.log("ERR: " + err)
+            userStore.login(data.username, res.token);
+            router.push('/')
+        } else {
             registerError.value = true;
         }
+    } catch (err) {
+        console.log("ERR: " + err)
+        registerError.value = true;
     }
+}
 </script>

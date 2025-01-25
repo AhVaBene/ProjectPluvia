@@ -11,41 +11,42 @@ const userStore = useUserStore();
 const reportStore = useReportsStore();
 const route = useRoute();
 
-const routeName = computed(() => route.path)
+const routeName = computed<string>(() => route.path)
 
 const secondaryTopBarRoutes: [string, string] = ["/notifications", "/profile"]
 const favoriteLocations: {latitude: Number, longitude: Number}[] = []
 
-const getFavoriteLocations = async () => {
+async function getFavoriteLocations(): Promise<void> {
+  favoriteLocations.length = 0
   const res: [{ latitude: Number; longitude: Number }] = (await axios.get("http://localhost:3000/users/profile/" + userStore.user)).data.locations;
   res.forEach(e => {
       favoriteLocations.push({latitude: e.latitude, longitude: e.longitude})
   });
 }
 
-const onSuccess = async (position: { coords: any; }) => {
-    const latitude: number = position.coords.latitude;
-    const longitude: number = position.coords.longitude;
-    favoriteLocations.push({ latitude: latitude, longitude:longitude })
+async function onSuccess(position: { coords: { latitude: number, longitude: number}; }): Promise<void> {
+  const latitude: number = position.coords.latitude;
+  const longitude: number = position.coords.longitude;
+  favoriteLocations.push({ latitude: latitude, longitude:longitude })
 
-    try {
-      const data = (await axios.get("http://localhost:3000/reports/notifications", {
-        params: {
-          locations: favoriteLocations
-      }})
-    ).data
-    userStore.setNotifications(data.length)
-    reportStore.setReports(data)
-    } catch (e) {
+  try {
+    const data = (await axios.get("http://localhost:3000/reports/notifications", {
+      params: {
+        locations: favoriteLocations
+    }})
+  ).data
+  userStore.setNotifications(data.length)
+  reportStore.setReports(data)
+  } catch (e) {
     console.error(e)
-    }
+  }
 };
 
-const error = (err: any) => {
+function error(err: any): void {
     console.log(err)
 };
 
-const getNotifications = async () => {
+async function getNotifications(): Promise<void> {
   await getFavoriteLocations()
   navigator.geolocation.getCurrentPosition(onSuccess, error)
 }

@@ -13,7 +13,7 @@
     <MDBModalHeader>
     </MDBModalHeader>
     <MDBModalBody>
-      <img :src="imgPath.toString()" alt="Report image at fullscreen" />
+      <img :src="imgPath" alt="Report image at fullscreen" />
     </MDBModalBody>
 </MDBModal>
 </template>
@@ -27,9 +27,9 @@ import { useReportsStore } from '@/stores/reports';
 const reportStore = useReportsStore();
 
 const imgModal = ref<boolean>(false)
-const imgPath = ref<String>("")
+const imgPath = ref<string>("")
 
-const imgClickedCallback = (srcImg: string) => {
+function imgClickedCallback(srcImg: string): void {
   imgPath.value = srcImg
   imgModal.value = !imgModal.value
 }

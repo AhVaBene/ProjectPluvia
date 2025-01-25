@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { MDBNavbar, MDBNavbarNav, MDBIcon, MDBNavbarItem, MDBFooter } from 'mdb-vue-ui-kit';
+import { computed, ref } from 'vue';
+import { MDBNavbar, MDBNavbarNav, MDBIcon, MDBNavbarItem } from 'mdb-vue-ui-kit';
 import { useRoute } from 'vue-router';
 
 // Icons array with default state (outlined version)
@@ -19,7 +19,7 @@ const iconFillMapping = {
 };
 
 const route = useRoute();
-const routeName = computed(() => route.path)
+const routeName = computed<string>(() => route.path)
 </script>
 
 <template>

@@ -16,11 +16,7 @@ const routeName = computed<string>(() => route.path)
 const secondaryTopBarRoutes: [string, string] = ["/notifications", "/profile"]
 const favoriteLocations: {latitude: Number, longitude: Number}[] = []
 
-<<<<<<< HEAD
-const getFavoriteLocations = async () => {
-=======
 async function getFavoriteLocations(): Promise<void> {
->>>>>>> a5158d84a3b95f1305c5ceb47c6030f9f156fa14
   favoriteLocations.length = 0
   const res: [{ latitude: Number; longitude: Number }] = (await axios.get("http://localhost:3000/users/profile/" + userStore.user)).data.locations;
   res.forEach(e => {

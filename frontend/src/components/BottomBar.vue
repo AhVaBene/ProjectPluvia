@@ -23,14 +23,8 @@ const routeName = computed<string>(() => route.path)
 </script>
 
 <template>
-<<<<<<< HEAD
 
     <MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-top pt-1">
-=======
-<div class="">
-  <div class="col-md-12">
-    <MDBNavbar expand="lg" light bg="light" container position="bottom" class="border-top pt-1">
->>>>>>> a5158d84a3b95f1305c5ceb47c6030f9f156fa14
     <MDBNavbarNav class="mx-auto">
       <MDBNavbarItem to="/">
         <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
@@ -52,13 +46,8 @@ const routeName = computed<string>(() => route.path)
       </MDBNavbarItem>
     </MDBNavbarNav>
   </MDBNavbar>
-<<<<<<< HEAD
   
 <!-- </div> -->
-=======
-  </div>
-</div>
->>>>>>> a5158d84a3b95f1305c5ceb47c6030f9f156fa14
 </template>
 
 <style>

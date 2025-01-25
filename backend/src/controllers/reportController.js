@@ -6,10 +6,12 @@ const path = require('path');
 
 exports.getReportsNearby = (req, res) => {
     const location = req.query.location;
+    const minRiskLevel = req.query.isAdmin ? 0 : 1
 
     reportModel.find()
-        .where('location.latitude').gte(Number(location.latitude - 1)).lte(Number(parseFloat(location.latitude) + 1))
-        .where('location.longitude').gte(Number(location.longitude - 1)).lte(Number(parseFloat(location.longitude) + 1))
+        .where('riskLevel').gte(minRiskLevel)
+        .where('location.latitude').gte(Number(location.latitude - 0.6)).lte(Number(parseFloat(location.latitude) + 0.6))
+        .where('location.longitude').gte(Number(location.longitude - 0.6)).lte(Number(parseFloat(location.longitude) + 0.6))
         .sort('-date')
         .then(docs => {
             res.json(docs);
@@ -129,9 +131,9 @@ exports.getNotifications = (req, res) =>  {
         locations.forEach((e, index, array) => {
             reportModel.find()
                 .where('date').gte(yesterday).lte(currentDate)
-                //.where('riskLeve').gte(2)
-                .where('location.latitude').gte(Number(e.latitude - 1)).lte(Number(parseFloat(e.latitude) + 1))
-                .where('location.longitude').gte(Number(e.longitude - 1)).lte(Number(parseFloat(e.longitude) + 1))
+                .where('riskLevel').gte(2)
+                .where('location.latitude').gte(Number(e.latitude - 0.6)).lte(Number(parseFloat(e.latitude) + 0.6))
+                .where('location.longitude').gte(Number(e.longitude - 0.6)).lte(Number(parseFloat(e.longitude) + 0.6))
                 .sort('-date')
                 .then(docs => {
                     docs.forEach(r => reports.push(r))

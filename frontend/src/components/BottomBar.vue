@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { MDBNavbar, MDBNavbarNav, MDBIcon, MDBNavbarItem, MDBFooter } from 'mdb-vue-ui-kit';
+import { computed, ref } from 'vue';
+import { MDBNavbar, MDBNavbarNav, MDBIcon, MDBNavbarItem } from 'mdb-vue-ui-kit';
 import { useRoute } from 'vue-router';
 
 // Icons array with default state (outlined version)
@@ -19,12 +19,18 @@ const iconFillMapping = {
 };
 
 const route = useRoute();
-const routeName = computed(() => route.path)
+const routeName = computed<string>(() => route.path)
 </script>
 
 <template>
+<<<<<<< HEAD
 
     <MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-top pt-1">
+=======
+<div class="">
+  <div class="col-md-12">
+    <MDBNavbar expand="lg" light bg="light" container position="bottom" class="border-top pt-1">
+>>>>>>> a5158d84a3b95f1305c5ceb47c6030f9f156fa14
     <MDBNavbarNav class="mx-auto">
       <MDBNavbarItem to="/">
         <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
@@ -46,14 +52,18 @@ const routeName = computed(() => route.path)
       </MDBNavbarItem>
     </MDBNavbarNav>
   </MDBNavbar>
+<<<<<<< HEAD
   
 <!-- </div> -->
+=======
+  </div>
+</div>
+>>>>>>> a5158d84a3b95f1305c5ceb47c6030f9f156fa14
 </template>
 
 <style>
 .sticky-bottom {
   position: fixed;
-  width:100%;
   bottom:0;
   margin-top: 5em;
 }

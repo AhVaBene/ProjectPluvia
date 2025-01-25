@@ -70,7 +70,7 @@ exports.register = (req, res) => {
         });
 }
 
-exports.updateIcon = (req, res) => {
+exports.updateProfile = (req, res) => {
     const filter = { username: req.params.id }; // Get the User ID from the request parameters
     const updateData = req.body.data; // Get the updated data from the request body
     console.log(updateData)

@@ -24,6 +24,6 @@ const topBarRoutes = ["/login"]
 <style>
 #app {
   font-family: Roboto, Helvetica, Arial, sans-serif;
-  padding: 0.2rem;
+  padding: 0rem 0.8rem;
 }
 </style>

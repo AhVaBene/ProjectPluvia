@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const dangerIcon = "fa fa-exclamation-circle fa-lg riskLevel"
+const dangerIcon: string = "fa fa-exclamation-circle fa-lg riskLevel"
 const props = defineProps(["riskLevel"])
 const risksString = ["Low", "Medium", "High", "Do not validate"]
 

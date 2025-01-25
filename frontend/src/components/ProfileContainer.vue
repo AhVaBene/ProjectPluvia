@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { MDBModal, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBBtn } from 'mdb-vue-ui-kit'
+import { MDBModal, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBBtn, MDBIcon } from 'mdb-vue-ui-kit'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import UserAvatar from './UserAvatar.vue';
 import router from '@/router';
+
+const userStore = useUserStore()
 
 const user = ref({
     name: String,
@@ -22,18 +24,19 @@ const user = ref({
     avatarPicture: Number
 })
 const avatarModal = ref<boolean>(false)
-const userStore = useUserStore()
 const selectedIcon = ref<number>(0)
+const activeLocationIndex = ref<number>(0)
+const isAddLegal = computed<boolean>(() => user.value.locations.length < 5)
 
-const onAvatarClicked = () => {
+function onAvatarClicked(): void {
     avatarModal.value = !avatarModal.value
 }
 
-const onAvatarChanged = (newIcon: number) => {
+function onAvatarChanged(newIcon: number): void {
     selectedIcon.value = newIcon
 }
 
-const onModalClose = async (isSave: boolean) => {
+async function onModalClose(isSave: boolean): Promise<void> {
     const newIcon = selectedIcon.value
     if(isSave) {
         const res = (await axios.put("http://localhost:3000/users/profile/" + userStore.user, {
@@ -49,12 +52,49 @@ const onModalClose = async (isSave: boolean) => {
     onAvatarClicked()
 }
 
-const onLogoutClick = () => {
+function onAddLocation(): void {
+    user.value.locations.push(user.value.locations[0])
+}
+
+async function onLocationChange(location: any): Promise<void> {
+    const newLocation: {
+        city: String,
+        address: String,
+        latitude: Number,
+        longitude: Number,
+        } = { 
+            city: location.address_components[2].short_name,
+            address: location.name,
+            latitude: location.geometry.location.lat(),
+            longitude: location.geometry.location.lng()
+        }
+    user.value.locations[activeLocationIndex.value] = newLocation
+    const res = (await axios.put("http://localhost:3000/users/profile/" + userStore.user, {
+        data: {
+            locations: user.value.locations
+        }
+    })
+    ).data
+    user.value = res
+}
+
+async function deleteLocation(index: number): Promise<void> {
+    user.value.locations.splice(index, 1); 
+    const res = (await axios.put("http://localhost:3000/users/profile/" + userStore.user, {
+        data: {
+            locations: user.value.locations
+        }
+    })
+    ).data
+    user.value = res
+}
+
+function onLogoutClick(): void {
     userStore.logout()
     router.push('/')
 }
 
-const getUser = async () => {
+async function getUser(): Promise<void> {
     try {
         const data = (await axios.get("http://localhost:3000/users/profile/" + userStore.user)).data
         user.value = data
@@ -80,11 +120,22 @@ onMounted(getUser)
 </div>
 <hr>
 <div class="px-4 py-3">
-    <div v-for="location in user.locations">
-        <p>{{ location.address + ", " + location.city }}</p>
+    <div v-for="(location, index) in user.locations">
+        <div class="d-flex flex-row" @click="activeLocationIndex = index">
+            <GMapAutocomplete
+                @place_changed="onLocationChange"
+                class="form-control"
+                :placeholder="(location.address + ', ' + location.city)">
+            </GMapAutocomplete>
+            
+            <MDBBtn v-if="index==user.locations.length-1 && index!=0" color="danger" @click="deleteLocation(index)">
+                <MDBIcon icon="trash-alt"></MDBIcon>
+            </MDBBtn>
+        </div>
+
     </div>
-    <div class="text-end">
-        <MDBBtn color="primary" rounded>Manage favorite locations</MDBBtn>
+    <div class="text-end mt-2">
+        <MDBBtn :disabled="!isAddLegal" color="primary" rounded @click="onAddLocation">Add a favorite location</MDBBtn>
     </div>
 </div>
 <hr>

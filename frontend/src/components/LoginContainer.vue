@@ -25,7 +25,7 @@ const loginError = ref<Boolean>(false);
 const data = reactive( { username: "", password: "" } );
 const userStore = useUserStore();
 
-const login = async () => {
+async function login(): Promise<void> {
     try{
         const res = (await axios.get("http://localhost:3000/users/login", {
             params: {

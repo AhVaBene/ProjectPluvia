@@ -25,19 +25,19 @@ const props = defineProps<{
     isUserAdmin: Boolean
 }>()
 
-const fullAddress = computed(() => {
+const fullAddress = computed<string>(() => {
     const addr = props.report.location.address + ", " + props.report.location.city
     if(addr.length > 34) {
         return addr.substring(0, 32) + "..."
     } 
     return addr;
 })
-const reportDate = computed(() => new Date(props.report.date))
-const iconClass = computed(() => dangerIcon + props.report.riskLevel)
+const reportDate = computed<Date>(() => new Date(props.report.date))
+const iconClass = computed<string>(() => dangerIcon + props.report.riskLevel)
 
 const emits = defineEmits(["imgClicked"])
 
-const onVerificationClick = async (riskLevel: number) => {
+async function onVerificationClick(riskLevel: number):Promise<void> {
     const newReport = props.report
     newReport.riskLevel = riskLevel
     const res = (await axios.put("http://localhost:3000/reports/" + props.report.id, {
@@ -46,7 +46,6 @@ const onVerificationClick = async (riskLevel: number) => {
         }})
     ).data
     console.log(res)
-    console.log(props.report)
 }
 </script>
 

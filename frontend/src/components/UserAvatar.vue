@@ -6,8 +6,8 @@ const vMdbRipple = mdbRipple
 
 const props = defineProps(['iconNumber', 'event', 'iconSelected'])
 
-const iconPath = computed(() => "src/assets/img/profile_pictures/p_icon" + props.iconNumber + ".png")
-const selectedClass = computed(() => props.iconSelected == props.iconNumber ? 'selected' : '')
+const iconPath = computed<string>(() => "src/assets/img/profile_pictures/p_icon" + props.iconNumber + ".png")
+const selectedClass = computed<string>(() => props.iconSelected == props.iconNumber ? 'selected' : '')
 </script>
 
 <template>

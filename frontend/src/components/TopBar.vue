@@ -5,17 +5,22 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useReportsStore } from '@/stores/reports';
+import router from '@/router';
 
 const userStore = useUserStore();
 const reportStore = useReportsStore();
 const route = useRoute();
 
-const routeName = computed(() => route.path)
+const routeName = computed<string>(() => route.path)
 
 const secondaryTopBarRoutes: [string, string] = ["/notifications", "/profile"]
 const favoriteLocations: {latitude: Number, longitude: Number}[] = []
 
+<<<<<<< HEAD
 const getFavoriteLocations = async () => {
+=======
+async function getFavoriteLocations(): Promise<void> {
+>>>>>>> a5158d84a3b95f1305c5ceb47c6030f9f156fa14
   favoriteLocations.length = 0
   const res: [{ latitude: Number; longitude: Number }] = (await axios.get("http://localhost:3000/users/profile/" + userStore.user)).data.locations;
   res.forEach(e => {
@@ -23,29 +28,29 @@ const getFavoriteLocations = async () => {
   });
 }
 
-const onSuccess = async (position: { coords: any; }) => {
-    const latitude: number = position.coords.latitude;
-    const longitude: number = position.coords.longitude;
-    favoriteLocations.push({ latitude: latitude, longitude:longitude })
+async function onSuccess(position: { coords: { latitude: number, longitude: number}; }): Promise<void> {
+  const latitude: number = position.coords.latitude;
+  const longitude: number = position.coords.longitude;
+  favoriteLocations.push({ latitude: latitude, longitude:longitude })
 
-    try {
-      const data = (await axios.get("http://localhost:3000/reports/notifications", {
-        params: {
-          locations: favoriteLocations
-      }})
-    ).data
-    userStore.setNotifications(data.length)
-    reportStore.setReports(data)
-    } catch (e) {
+  try {
+    const data = (await axios.get("http://localhost:3000/reports/notifications", {
+      params: {
+        locations: favoriteLocations
+    }})
+  ).data
+  userStore.setNotifications(data.length)
+  reportStore.setReports(data)
+  } catch (e) {
     console.error(e)
-    }
+  }
 };
 
-const error = (err: any) => {
+function error(err: any): void {
     console.log(err)
 };
 
-const getNotifications = async () => {
+async function getNotifications(): Promise<void> {
   await getFavoriteLocations()
   navigator.geolocation.getCurrentPosition(onSuccess, error)
 }
@@ -64,7 +69,7 @@ onMounted(getNotifications)
       <MDBBadge pill notification badge="danger">{{ userStore.notifications }}</MDBBadge>
     </MDBNavbarItem>
 
-    <MDBNavbarItem to="/" active v-else>
+    <MDBNavbarItem @click="router.go(-1)" active v-else>
       <MDBIcon class="fa fa-arrow-left" size="lg" />
     </MDBNavbarItem>
 

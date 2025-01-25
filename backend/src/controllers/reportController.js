@@ -1,4 +1,8 @@
 const { reportModel } = require('../models/reportsModel.js');
+const multer = require('multer');
+const { randomUUID } = require('crypto');
+const path = require('path');
+
 
 exports.getReportsNearby = (req, res) => {
     const location = req.query.location;
@@ -67,11 +71,41 @@ exports.deleteReport = (req, res) => {
         });
 }
 
-exports.createReport = (req, res) => {
-    const reportData = req.body; // Get the report data from the request body
-    console.log(req.body)
 
-    const newReport = new reportModel(reportData);
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Set the directory where files will be stored
+    },
+    filename: (req, file, cb) => {
+      // Use the original file name and add its extension
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const ext = path.extname(file.originalname); // Extract the original file extension
+      const baseName = path.basename(file.originalname, ext); // Extract the base name without the extension
+  
+      cb(null, `${baseName}-${uniqueSuffix}${ext}`); // Create a unique filename
+    }
+  });
+
+const upload = multer({storage});
+
+exports.createReport = [upload.single('file'),(req, res) => {
+    console.log("REPORT UPLOAD")
+
+    const reportData = req.formData; // Get the report data from the request body
+    console.log(req.file)
+    console.log(req.body)
+    console.log(req.file.path)
+
+    const report = {
+        id: randomUUID(),
+        location: JSON.parse(req.body.location),
+        pic: req.file.path,
+        riskLevel: 0,
+        date: new Date(req.body.date),
+        username: req.body.username
+    }
+
+    const newReport = new reportModel(report);
 
     newReport
       .save()
@@ -81,7 +115,7 @@ exports.createReport = (req, res) => {
       .catch((err) => {
         res.status(500).send(err);
       });
-};
+}]
 
 exports.getNotifications = (req, res) =>  {
     const locations = req.query.locations;
@@ -90,7 +124,7 @@ exports.getNotifications = (req, res) =>  {
     const currentDate = new Date();
     var yesterday = new Date(currentDate);
     yesterday.setDate(currentDate.getDate() - 1);
-
+    console.log(locations)
     var query = new Promise((resolve, reject) => {
         locations.forEach((e, index, array) => {
             reportModel.find()

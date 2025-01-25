@@ -23,8 +23,7 @@ const routeName = computed(() => route.path)
 </script>
 
 <template>
-<div class="sticky-bottom">
-  <div class="col-md-12">
+
     <MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-top pt-1">
     <MDBNavbarNav class="mx-auto">
       <MDBNavbarItem to="/">
@@ -47,9 +46,8 @@ const routeName = computed(() => route.path)
       </MDBNavbarItem>
     </MDBNavbarNav>
   </MDBNavbar>
-  </div>
   
-</div>
+<!-- </div> -->
 </template>
 
 <style>
@@ -57,5 +55,6 @@ const routeName = computed(() => route.path)
   position: fixed;
   width:100%;
   bottom:0;
+  margin-top: 5em;
 }
 </style>

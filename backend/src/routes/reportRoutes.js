@@ -2,7 +2,7 @@ const express = require('express');
 const reportRouter = express.Router();
 const reportController = require('../controllers/reportController');
 
-reportRouter.route('/')
+reportRouter.route('/report')
     .get(reportController.getAllReports)
     .post(reportController.createReport);
 

@@ -4,8 +4,12 @@ import { VMap, VMapOsmTileLayer, VMapZoomControl } from 'vue-map-ui';
 </script>
 
 <template>
-<VMap style="height: 100em; width:150em; top:5em;left:0; position: fixed;">
+  <div class="flex flex-col w-full h-full">
+    <div class="flex-grow basis-full">
+<VMap style="width: 100%;height:43em;">
   <VMapOsmTileLayer />
   <VMapZoomControl />
 </VMap>
+  </div>
+</div>
 </template>

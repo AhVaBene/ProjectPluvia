@@ -13,6 +13,6 @@ userRouter.route('/token/:id')
 
 userRouter.route('/profile/:id')
     .get(userController.getUserbyUsername)
-    .put(userController.updateIcon);
+    .put(userController.updateProfile);
 
 module.exports = userRouter;

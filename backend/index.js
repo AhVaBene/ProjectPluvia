@@ -4,7 +4,6 @@ const userRouter = require('./src/routes/userRoutes.js');
 const reportRouter = require('./src/routes/reportRoutes.js');
 const cors = require('cors');
 const path = require('path')
-const { createServer } = require('http');
 
 mongoose.connect('mongodb://localhost:27017/dbPluvia');
 

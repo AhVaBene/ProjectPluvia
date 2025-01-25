@@ -17,6 +17,7 @@ exports.getUserbyUsername = (req, res) => {
 
 exports.getUserbyToken = (req, res) => {
     const user = jwt.verify(req.params.id, 'secret_key');
+    
     userModel.findOne()
         .where('username').equals(user.username)
         .then(doc => {
@@ -32,7 +33,7 @@ exports.getUserbyToken = (req, res) => {
 
 exports.login = (req, res) => {
     const { username, password } = req.query;
-    console.log(username, password)
+
     userModel.findOne()
         .where('username').equals(username)
         .where('password').equals(password)
@@ -49,7 +50,8 @@ exports.login = (req, res) => {
 }
 
 exports.register = (req, res) => {
-    const { name, surname, username, password, address } = req.body.params;
+    const { name, surname, username, password, locations } = req.body.params;
+
     const newUser = new userModel({
         name: name,
         surname: surname,
@@ -57,11 +59,10 @@ exports.register = (req, res) => {
         password: password,
         admin: 0,
         avatarPicture: 1,
-        locations: [{"city": "Cesena", "address": "Via dell'Università 1", "latitude": 44.14830115885112, "longitude": 12.235541253200406}] //TODO
+        locations: locations
     })
     newUser.save()
         .then(user => {
-            console.log(user)
             const token = jwt.sign({ username: user.username, password: user.password, admin: user.admin }, 'secret_key');
             res.json({ token });
         })
@@ -73,8 +74,7 @@ exports.register = (req, res) => {
 exports.updateProfile = (req, res) => {
     const filter = { username: req.params.id }; // Get the User ID from the request parameters
     const updateData = req.body.data; // Get the updated data from the request body
-    console.log(updateData)
-    console.log(userModel.collection('users').find().toArray())
+
     userModel
         .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
         .then((updatedUser) => {

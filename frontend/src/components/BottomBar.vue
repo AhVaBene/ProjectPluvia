@@ -23,31 +23,28 @@ const routeName = computed<string>(() => route.path)
 </script>
 
 <template>
-
-    <MDBNavbar expand="lg" light bg="light" container position="sticky" class="border-top pt-1">
-    <MDBNavbarNav class="mx-auto">
-      <MDBNavbarItem to="/">
-        <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
-      </MDBNavbarItem>
-    </MDBNavbarNav>
-    <MDBNavbarNav class="mx-auto">
-      <MDBNavbarItem to="/map">
-        <MDBIcon :class="routeName=='/map' ? iconFillMapping.geoIcon : icons.geoIcon" size="lg" />
-      </MDBNavbarItem>
-    </MDBNavbarNav>
-    <MDBNavbarNav class="mx-auto">
-      <MDBNavbarItem to="/search">
-        <MDBIcon :class="routeName=='/search' ? iconFillMapping.searchIcon : icons.searchIcon" size="lg" />
-      </MDBNavbarItem>
-    </MDBNavbarNav>
-    <MDBNavbarNav class="mx-auto">
-      <MDBNavbarItem to="/createReport">
-        <MDBIcon :class="routeName=='/createReport' ? iconFillMapping.plusIcon : icons.plusIcon" size="lg" />
-      </MDBNavbarItem>
-    </MDBNavbarNav>
-  </MDBNavbar>
-  
-<!-- </div> -->
+<MDBNavbar expand="lg" light bg="light" container position="bottom" class="border-top pt-1">
+  <MDBNavbarNav class="mx-auto">
+    <MDBNavbarItem to="/">
+      <MDBIcon :class="routeName=='/' ? iconFillMapping.houseIcon : icons.houseIcon" size="lg" />
+    </MDBNavbarItem>
+  </MDBNavbarNav>
+  <MDBNavbarNav class="mx-auto">
+    <MDBNavbarItem to="/map">
+      <MDBIcon :class="routeName=='/map' ? iconFillMapping.geoIcon : icons.geoIcon" size="lg" />
+    </MDBNavbarItem>
+  </MDBNavbarNav>
+  <MDBNavbarNav class="mx-auto">
+    <MDBNavbarItem to="/search">
+      <MDBIcon :class="routeName=='/search' ? iconFillMapping.searchIcon : icons.searchIcon" size="lg" />
+    </MDBNavbarItem>
+  </MDBNavbarNav>
+  <MDBNavbarNav class="mx-auto">
+    <MDBNavbarItem to="/createReport">
+      <MDBIcon :class="routeName=='/createReport' ? iconFillMapping.plusIcon : icons.plusIcon" size="lg" />
+    </MDBNavbarItem>
+  </MDBNavbarNav>
+</MDBNavbar>
 </template>
 
 <style>

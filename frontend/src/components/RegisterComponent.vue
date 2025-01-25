@@ -14,7 +14,11 @@
     <MDBInput required v-model="data.password" label="Password" type="password" id="password" wrapperClass="mb-3" />
 
     <!-- Location input TODO -->
-    <MDBInput required v-model="data.address" label="Favorite Address" id="address" wrapperClass="mb-3" />
+    <GMapAutocomplete
+        required
+        @place_changed="onLocationChange"
+        class="form-control mb-3">
+    </GMapAutocomplete>
 
     <p v-if="registerError" class="text-danger">The username is already chosen. Please pick another one</p>
 
@@ -32,8 +36,29 @@ import { ref, reactive } from 'vue';
 import CryptoJS from 'crypto-js'
 
 const registerError = ref<Boolean>(false);
-const data = reactive( { name: "", surname: "", username: "", password: "", address: "" } );
+const data = reactive( { name: "", surname: "", username: "", password: "" } );
+const location = ref<{
+        city: string,
+        address: string,
+        latitude: number,
+        longitude: number,
+}>()
 const userStore = useUserStore();
+
+function onLocationChange(loc: any): void {
+    const newLocation: {
+        city: string,
+        address: string,
+        latitude: number,
+        longitude: number,
+        } = { 
+            city: loc.address_components[2].short_name,
+            address: loc.name,
+            latitude: loc.geometry.location.lat(),
+            longitude: loc.geometry.location.lng()
+        }
+    location.value = newLocation
+}
 
 async function register(): Promise<void> {
     const isUsernameAvailabile: Boolean = await axios.get("http://localhost:3000/users/profile/" + data.username).then(() => false).catch(() => true)
@@ -42,10 +67,10 @@ async function register(): Promise<void> {
         surname: data.surname,
         username: data.username,
         password: CryptoJS.SHA3(data.password).toString(),
-        locations: data.address,
+        locations: [location.value],
         avatarPicture: 1
     }
-    console.log(params)
+
     try{
         if(isUsernameAvailabile) {
             const res = (await axios.post("http://localhost:3000/users/register", {

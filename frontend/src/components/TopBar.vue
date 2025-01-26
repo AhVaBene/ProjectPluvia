@@ -6,6 +6,8 @@ import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 import { useReportsStore } from '@/stores/reports';
 import router from '@/router';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const userStore = useUserStore();
 const reportStore = useReportsStore();
@@ -35,6 +37,14 @@ async function onSuccess(position: { coords: { latitude: number, longitude: numb
         locations: favoriteLocations
     }})
   ).data
+  if(userStore.notifications < data.length) {
+    toast.warn("There are new dangerous reports in your notifications", {
+    pauseOnHover: false,
+    pauseOnFocusLoss: false,
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: 2500,
+    });
+  }
   userStore.setNotifications(data.length)
   reportStore.setReports(data)
   } catch (e) {

@@ -45,7 +45,6 @@ exports.getOnlyVerifiedReports = (res) =>{
 exports.updateReport = (req, res) => {
     const filter = { id: req.params.id }; // Get the report ID from the request parameters
     const updateData = req.body.data; // Get the updated data from the request body
-    console.log(updateData)
 
     reportModel
         .findOneAndUpdate(filter, updateData, { new: true }) // { new: true } returns the updated document
@@ -126,7 +125,7 @@ exports.getNotifications = (req, res) =>  {
     const currentDate = new Date();
     var yesterday = new Date(currentDate);
     yesterday.setDate(currentDate.getDate() - 1);
-    console.log(locations)
+
     var query = new Promise((resolve, reject) => {
         locations.forEach((e, index, array) => {
             reportModel.find()

@@ -38,9 +38,12 @@ async function onSuccess(position: { coords: { latitude: number, longitude: numb
     }})
   ).data
   if(userStore.notifications < data.length) {
-    toast("Wow so easy !", {
-        autoClose: 1000,
-      });
+    toast.warn("There are new dangerous reports in your notifications", {
+    pauseOnHover: false,
+    pauseOnFocusLoss: false,
+    position: toast.POSITION.TOP_CENTER,
+    autoClose: 2500,
+    });
   }
   userStore.setNotifications(data.length)
   reportStore.setReports(data)
@@ -56,12 +59,6 @@ function error(err: any): void {
 async function getNotifications(): Promise<void> {
   await getFavoriteLocations()
   navigator.geolocation.getCurrentPosition(onSuccess, error)
-  toast.warn("There are new dangerous reports in your notifications", {
-    pauseOnHover: false,
-    pauseOnFocusLoss: false,
-    position: toast.POSITION.TOP_CENTER,
-    autoClose: 2500,
-  });
 }
 
 setInterval(getNotifications, 90000);

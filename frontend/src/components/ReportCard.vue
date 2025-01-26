@@ -73,7 +73,7 @@ const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'
                 </MDBCardText>
             </MDBCardBody>
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', props.report.pic)">
-                <MDBCardImg class="max-w-50" bottom v-bind:src="props.report.pic.toString()" :alt="`Report image at ${ fullAddress } of risk level ${props.report.riskLevel }`"/>
+                <MDBCardImg style="height:auto;width:auto;max-height: 20rem;margin:auto" class="max-w-50 text-center" bottom v-bind:src="props.report.pic.toString()" :alt="`Report image at ${ fullAddress } of risk level ${props.report.riskLevel }`"/>
             </a>
             <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0">
                 <div class="d-flex flex-column mb-3">

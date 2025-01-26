@@ -141,10 +141,11 @@ const sendReport = async()=>{
 </script>
 
 <template>
-<div class=" p-2 m-2">
+  <div class="pb-4">
+<div class=" p-2 m-2 ">
   <MDBFile label="Image" class="custom-file-upload" @change="handleFileUpload" />
   <div v-if="uploadedImage" class="d-flex justify-content-center align-items-center">
-    <img :src="uploadedImage" alt="Uploaded Image" />
+    <img :src="uploadedImage" alt="Uploaded Image" class="image-preview"/>
   </div>
   <div class="m-2">
     <p>{{ fullAddress }}</p>
@@ -172,8 +173,9 @@ const sendReport = async()=>{
     </VMap>
   </div>
 </div>
-<div class="d-grid gap-2 col-9 mx-auto py-3">
+<div class="d-grid gap-2 col-9 mx-auto mb-5">
   <MDBBtn color="primary" rounded @click="sendReport">Send Report</MDBBtn>
+</div>
 </div>
 </template>
 
@@ -186,5 +188,10 @@ const sendReport = async()=>{
   cursor: pointer;
   text-align: center;
   margin:0;
+}
+.image-preview{
+  /* max-height: 200px; Optional: Constrain height */
+  width: auto; /* Maintain aspect ratio */
+  height: auto; /* Maintain aspect ratio */
 }
 </style>

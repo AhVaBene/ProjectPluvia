@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker, VMapPinIcon } from 'vue-map-ui';
+import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker, VMapPinIcon, VMapLocateControl, VMapAttributionControl } from 'vue-map-ui';
 import { ref, onMounted, computed } from "vue";
 import { useUserStore } from '@/stores/user';
 import ReportCard from './ReportCard.vue';
 import { MDBModal, MDBModalBody } from 'mdb-vue-ui-kit';
 import { useRoute } from 'vue-router';
 import { type LatLng, type LatLngBounds, type LatLngTuple } from 'leaflet';
+import '@leaflet-extensions/locatecontrol';
+import '@leaflet-extensions/locatecontrol/dist/leaflet-locatecontrol.css';
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -99,6 +101,8 @@ const showModalComputed = computed(()=>{return clicked.value>=0 && reports.value
 <VMap class="chart" :center="center" :zoom="zoom">
   <VMapOsmTileLayer />
   <VMapZoomControl />
+  <VMapLocateControl />
+  <VMapAttributionControl />
     <VMapMarker v-for="(marker, index) in reports"
       :key="index"
       :latlng="[marker.location.latitude, marker.location.longitude]"

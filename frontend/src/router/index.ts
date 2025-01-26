@@ -6,6 +6,7 @@ import ProfileView from '@/views/ProfileView.vue';
 import MapView from '@/views/MapView.vue';
 import CreateView from '@/views/CreateView.vue';
 import NotificationsView from '@/views/NotificationsView.vue';
+import SearchView from '@/views/SearchView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,7 +27,7 @@ const router = createRouter({
       component: ProfileView,
     },
     {
-      path: "/map",
+      path: "/map/:latlngzoom",
       name: "Map",
       component: MapView,
     },
@@ -38,7 +39,7 @@ const router = createRouter({
     {
       path: "/search",
       name: "Search",
-      component: HomeView,
+      component: SearchView,
     },
     {
       path: "/notifications",

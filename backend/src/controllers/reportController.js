@@ -3,6 +3,47 @@ const multer = require('multer');
 const { randomUUID } = require('crypto');
 const path = require('path');
 
+exports.searchReport = (req, res) => {
+    try {
+        const { address, city, date, riskLevel0, riskLevel1, riskLevel2, riskLevel3 } = req.query;
+
+        const query = {};
+
+        if (address) {
+            query['location.address'] = { $regex: address, $options: 'i' }; 
+        }
+        if (city) {
+            query['location.city'] = { $regex: city, $options: 'i' }; 
+        }
+
+        const riskLevels = [];
+        if (riskLevel0 === 'true') riskLevels.push(0);
+        if (riskLevel1 === 'true') riskLevels.push(1);
+        if (riskLevel2 === 'true') riskLevels.push(2);
+        if (riskLevel3 === 'true') riskLevels.push(3);
+
+        if (riskLevels.length > 0) {
+            query.riskLevel = { $in: riskLevels };
+        }
+
+        if (date) {
+            query.date = { $gte: new Date(date) };
+        }
+        console.log(query)
+        
+        reportModel.find(query)
+        .then(docs=>{
+            res.json(docs)
+        })
+        .catch(err=>{
+            res.status(500).send(err);
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error retrieving reports', error });
+    }
+}
 
 exports.getReportsNearby = (req, res) => {
     const location = req.query.location;
@@ -21,17 +62,18 @@ exports.getReportsNearby = (req, res) => {
         });
 }
 
-exports.getAllReports = (res) =>{
+exports.getAllReports = (req, res) =>{
     reportModel.find()
         .then(docs=>{
             res.json(docs)
         })
         .catch(err=>{
-            res.satus(500).send(err)
+            console.log(err)
+            res.status(500).send(err)
         })
 }
 
-exports.getOnlyVerifiedReports = (res) =>{
+exports.getOnlyVerifiedReports = (req, res) =>{
     reportModel.find()
         .where('riskLevel').gte(1)
         .then(docs=>{
@@ -90,6 +132,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
+
+
 exports.createReport = [upload.single('file'),(req, res) => {
     console.log("REPORT UPLOAD")
 
@@ -101,7 +145,7 @@ exports.createReport = [upload.single('file'),(req, res) => {
     const report = {
         id: randomUUID(),
         location: JSON.parse(req.body.location),
-        pic: req.file.path,
+        pic: 'http://localhost:3000/'+req.file.path,
         riskLevel: 0,
         date: new Date(req.body.date),
         username: req.body.username

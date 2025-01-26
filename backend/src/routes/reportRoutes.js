@@ -6,6 +6,8 @@ reportRouter.route('/report')
     .get(reportController.getAllReports)
     .post(reportController.createReport);
 
+reportRouter.route('/search').get(reportController.searchReport)
+
 reportRouter.route('/home')
     .get(reportController.getReportsNearby);
 

@@ -3,11 +3,11 @@ import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBAccordi
 import { computed, ref } from 'vue';
 import ReportCardFooterButton from './ReportCardFooterButton.vue';
 import axios from 'axios';
-
+import { RouterLink, useRoute } from 'vue-router';
 const activeItem = ref('');
 const vMdbRipple = mdbRipple
 const dangerIcon = "fa fa-exclamation-circle fa-lg me-3 riskLevel"
-
+const route = useRoute()
 const props = defineProps<{
     report: {
         id: String,
@@ -47,6 +47,7 @@ async function onVerificationClick(riskLevel: number):Promise<void> {
     ).data
     console.log(res)
 }
+const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'))
 </script>
 
 <template>
@@ -61,7 +62,7 @@ async function onVerificationClick(riskLevel: number):Promise<void> {
                 <MDBCardTitle>{{ props.report.username }}</MDBCardTitle>
                 <div class="d-flex justify-content-between">
                     <MDBCardText>
-                        <ins>Vai alla mappa</ins>
+                        <RouterLink v-if="isRouteMap" :to="{ name:'Map', params:{latlngzoom:report.location.latitude+','+report.location.longitude+',10'}}">Vai alla mappa </RouterLink>
                     </MDBCardText>
                     <MDBCardText class="text-end">
                         <small class="text-muted">
@@ -72,7 +73,7 @@ async function onVerificationClick(riskLevel: number):Promise<void> {
                 </div>
             </MDBCardBody>
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', props.report.pic)">
-                <MDBCardImg class="max-w-50" bottom v-bind:src="props.report.pic.toString()" alt="Report image at {{ fullAddress }} of risk level {{ props.report.riskLevel }}"/>
+                <MDBCardImg class="max-w-50" bottom v-bind:src="props.report.pic.toString()" :alt="`Report image at ${ fullAddress } of risk level ${props.report.riskLevel }`"/>
             </a>
             <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0">
                 <div class="d-flex flex-column mb-3">

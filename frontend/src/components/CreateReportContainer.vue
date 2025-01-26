@@ -2,14 +2,14 @@
 import { ref } from 'vue'
 import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker } from 'vue-map-ui';
 import axios from 'axios';
-import type { LatLng, LatLngBounds, LatLngTuple } from 'leaflet';
-import type { ViewChangedEvent } from 'vue-use-leaflet';
-import { MDBFile, MDBBtn } from 'mdb-vue-ui-kit';
+import { MDBFile, MDBBtn, MDBInput } from 'mdb-vue-ui-kit';
 import { useUserStore } from '@/stores/user';
 
 const address = ref("via antonio samorì 10")
 const coordinates  = ref({lat:0,lng:0})
 const user = useUserStore()
+const route = ref<String>('')
+const city = ref<String>('')
 
 const fetchGeocode = async () => {
       //reverse geocoding even is usegul 
@@ -22,13 +22,11 @@ const fetchGeocode = async () => {
         const response = await axios.get(url);
         if (response.data.status === "OK") {
           coordinates.value = response.data.results[0].geometry.location;
+          reverseGeocoding()
           console.log(coordinates.value)
-        } else {
-          alert(`Error: ${response.data.status}`);
         }
       } catch (error) {
         console.error("Error fetching geocode:", error);
-        alert("Failed to fetch geocode. Check the console for details.");
       }
 
     }
@@ -50,22 +48,13 @@ function handleFileUpload(event: Event) {
   }
 }
 
-const center = ref<LatLngTuple | LatLng>([0, 0]);
-const zoom = ref(0);
-const bounds = ref<LatLngBounds | null>(null);
-
-function onViewChanged(e: ViewChangedEvent) {
-  center.value = e.center;
-  zoom.value = e.zoom;
-  bounds.value = e.bounds;
-}
-
 
 const onSuccess = async (position: { coords: any; }) => {
   const latitude: number = position.coords.latitude;
   const longitude: number = position.coords.longitude;
   coordinates.value.lat = latitude
   coordinates.value.lng = longitude
+  reverseGeocoding()
 }
 
 const error = (err: any) => {
@@ -77,15 +66,13 @@ const geolocateme = async () => {
 }
 
 const movedMarker = (e)=>{
-  console.log(e.target._latlng)
   coordinates.value = e.target._latlng
-  console.log(coordinates.value)
+  reverseGeocoding()
 }
 
-const locality = ref<String>('None')
-const city = ref<String>('')
-
 const reverseGeocoding = async ()=>{
+  city.value= ''
+  route.value = ''
   const apiKey = "AIzaSyBp0zuqne1wsZMqJzo8cxpG8GLvGpg7_W8";
       const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodeURIComponent(
         coordinates.value.lat.toString()+","+coordinates.value.lng.toString()
@@ -95,26 +82,34 @@ const reverseGeocoding = async ()=>{
         const response = await axios.get(url);
         if (response.data.status === "OK") {
           response.data.results.forEach(d=>{
-            if(d.types.includes('street_address') || d.types.includes('route')){
+            if(d.types.includes('street_address')){
               d.address_components.forEach(e=>{
                 if(e.types.includes('locality') || e.types.includes("administrative_area_level_3")){
                   city.value = e.long_name  
                 }
                 if(e.types.includes('route')){
-                  locality.value = e.long_name  
+                  route.value = e.long_name  
                 }
-              }) 
+                
+              })
             }
-            console.log(d)
-            console.log(d.types)
+
+            if((city.value == '' || route.value == '' ) && d.types.includes('route') || d.types.includes("administrative_area_level_3")){
+              d.address_components.forEach(e=>{
+                if(e.types.includes('locality') || e.types.includes("administrative_area_level_3")){
+                  city.value = e.long_name  
+                }
+                if(e.types.includes('route')){
+                  route.value = e.long_name  
+                }
+                
+              })
+            }
           })
           console.log(response.data)
-        } else {
-          alert(`Error: ${response.data.status}`);
         }
       } catch (error) {
         console.error("Error fetching geocode:", error);
-        alert("Failed to fetch geocode. Check the console for details.");
       }
 }
 
@@ -124,7 +119,7 @@ const sendReport = async()=>{
     await reverseGeocoding()
     const location = {
       city: city.value,
-      address: locality.value,
+      address: route.value,
       latitude: coordinates.value.lat,
       longitude: coordinates.value.lng,
     }
@@ -133,10 +128,6 @@ const sendReport = async()=>{
     formData.append('riskLevel','0')
     formData.append('date', new Date().toJSON())
     formData.append('location',JSON.stringify(location))
-    console.log(formData)
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
     const res = (await axios.post("http://localhost:3000/reports/report", formData, {headers: {
         'Content-Type': 'multipart/form-data',
       },}))
@@ -163,10 +154,14 @@ const sendReport = async()=>{
       <MDBBtn color="primary" rounded  @click="fetchGeocode">Locate</MDBBtn>
       <MDBBtn color="primary" rounded @click="geolocateme">geolocate me</MDBBtn>
   </div>
+  <div class="mt-3">
+    <MDBInput :label="city" disabled class="me-1 mb-2" aria-label="disabled input example" formText="city"/>
+    <MDBInput :label="route" disabled class="me-1 mb-2" aria-label="disabled input example" formText="address"/>
+  </div>
 </div>
 <div class="flex flex-col w-full h-full">
     <div class="flex-grow basis-full">
-      <VMap :center="center" :zoom="zoom" @view-changed="onViewChanged" style="width: 100%;height:20em;">
+      <VMap style="width: 100%;height:20em;">
         <VMapOsmTileLayer />
         <VMapZoomControl />
         <VMapAttributionControl />

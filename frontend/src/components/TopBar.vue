@@ -31,10 +31,11 @@ async function onSuccess(position: { coords: { latitude: number, longitude: numb
   const longitude: number = position.coords.longitude;
   favoriteLocations.push({ latitude: latitude, longitude:longitude })
 
+  const locations = [...new Set(favoriteLocations)];
   try {
     const data = (await axios.get("http://localhost:3000/reports/notifications", {
       params: {
-        locations: favoriteLocations
+        locations: locations
     }})
   ).data
   if(userStore.notifications < data.length) {

@@ -174,7 +174,7 @@ hr {
   margin: auto;
   border: none;
   height: 2px;
-  width: 70%;
+  width: 80%;
   background-color: black;  /* Modern Browsers */
 }
 </style>

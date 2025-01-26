@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker } from 'vue-map-ui';
 import axios from 'axios';
 import { MDBFile, MDBBtn, MDBInput } from 'mdb-vue-ui-kit';
@@ -10,6 +10,7 @@ const coordinates  = ref({lat:0,lng:0})
 const user = useUserStore()
 const route = ref<String>('')
 const city = ref<String>('')
+const fullAddress = computed<string>(() => route.value + ', ' + city.value)
 
 const fetchGeocode = async () => {
       //reverse geocoding even is usegul 
@@ -140,48 +141,43 @@ const sendReport = async()=>{
 </script>
 
 <template>
-<div class="content">
-<MDBFile label="Image" class="custom-file-upload" @change="handleFileUpload" />
-<div v-if="uploadedImage" class="d-flex justify-content-center align-items-center mt-5 mb-2">
-      <img :src="uploadedImage" alt="Uploaded Image" />
-    </div>
-    <div class="d-flex justify-content-center align-items-center mt-2 mb-1">
-      <GMapAutocomplete
-        @place_changed="setAddress"
-        class="form-control"
-        placeholder="Address or  Pincode">
-      </GMapAutocomplete>
-      <MDBBtn color="primary" rounded  @click="fetchGeocode">Locate</MDBBtn>
-      <MDBBtn color="primary" rounded @click="geolocateme">geolocate me</MDBBtn>
+<div class=" p-2 m-2">
+  <MDBFile label="Image" class="custom-file-upload" @change="handleFileUpload" />
+  <div v-if="uploadedImage" class="d-flex justify-content-center align-items-center">
+    <img :src="uploadedImage" alt="Uploaded Image" />
   </div>
-  <div class="mt-3">
-    <MDBInput :label="city" disabled class="me-1 mb-2" aria-label="disabled input example" formText="city"/>
-    <MDBInput :label="route" disabled class="me-1 mb-2" aria-label="disabled input example" formText="address"/>
+  <div class="m-2">
+    <p>{{ fullAddress }}</p>
+  </div>
+  <div class="d-flex justify-content-center align-items-center mb-1">
+    <GMapAutocomplete
+      @place_changed="setAddress"
+      class="form-control"
+      placeholder="Address or  Pincode">
+    </GMapAutocomplete>
+    <MDBBtn color="primary" rounded  @click="fetchGeocode">Set location</MDBBtn>
+  </div>
+  <div class="text-end mb-2">
+    <MDBBtn color="primary" rounded @click="geolocateme">Use current location</MDBBtn>
   </div>
 </div>
+
 <div class="flex flex-col w-full h-full">
-    <div class="flex-grow basis-full">
-      <VMap style="width: 100%;height:20em;">
-        <VMapOsmTileLayer />
-        <VMapZoomControl />
-        <VMapAttributionControl />
-        <VMapMarker :latlng="[coordinates.lat, coordinates.lng]" :draggable="true" @moveend="movedMarker"/>
-      </VMap>
-    </div>
+  <div class="flex-grow basis-full">
+    <VMap style="width: 100%;height:20em;">
+      <VMapOsmTileLayer />
+      <VMapZoomControl />
+      <VMapAttributionControl />
+      <VMapMarker :latlng="[coordinates.lat, coordinates.lng]" :draggable="true" @moveend="movedMarker"/>
+    </VMap>
   </div>
-  <div class="d-flex justify-content-center align-items-center mt-2 mb-7">
-    <MDBBtn color="primary" rounded @click="sendReport">send</MDBBtn>
-  </div>
+</div>
+<div class="d-grid gap-2 col-9 mx-auto py-3">
+  <MDBBtn color="primary" rounded @click="sendReport">Send Report</MDBBtn>
+</div>
 </template>
 
 <style>
-
-.content{
-    margin-top: 4.8em;
-    margin-right: 0;
-    margin-left: 0;
-}
-
 .custom-file-upload {
   border-bottom: 2px solid #242424;
   /* display: inline-block; Ensures it behaves as a block element */

@@ -63,7 +63,12 @@ exports.getReportsNearby = (req, res) => {
 }
 
 exports.getAllReports = (req, res) =>{
+    const currentDate = new Date();
+    var yesterday = new Date(currentDate);
+    yesterday.setDate(currentDate.getDate() - 1);
+
     reportModel.find()
+        .where('date').gte(yesterday).lte(currentDate)
         .then(docs=>{
             res.json(docs)
         })

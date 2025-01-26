@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker } from 'vue-map-ui';
+import { VMap, VMapOsmTileLayer, VMapZoomControl, VMapMarker, VMapPinIcon } from 'vue-map-ui';
 import { ref, onMounted, computed } from "vue";
 import { useUserStore } from '@/stores/user';
 import ReportCard from './ReportCard.vue';
 import { MDBModal, MDBModalBody } from 'mdb-vue-ui-kit';
 import { useRoute } from 'vue-router';
-import type { LatLng, LatLngBounds, LatLngTuple } from 'leaflet';
+import { type LatLng, type LatLngBounds, type LatLngTuple } from 'leaflet';
 
 const userStore = useUserStore();
 const route = useRoute();
-
+const markerColors = ['grey', 'yellow', 'orange', 'red']
 
 interface Marker {
   id: string;
@@ -39,8 +39,8 @@ const isLatAndLngSet = ()=>{
   if(route.params.latlngzoom != undefined){
     const [lat, lng, z] = route.params.latlngzoom.toString().split(",").slice(0,3)
     console.log(lat, lng, z)
-     center.value = [parseFloat(lat as string), parseFloat(lng as string)]
-     zoom.value=parseInt(z)
+    center.value = [parseFloat(lat as string), parseFloat(lng as string)]
+    zoom.value=parseInt(z)
   }
 }
 const getAllReports = async ()=>{
@@ -99,12 +99,11 @@ const showModalComputed = computed(()=>{return clicked.value>=0 && reports.value
 <VMap class="chart" :center="center" :zoom="zoom">
   <VMapOsmTileLayer />
   <VMapZoomControl />
-    <VMapMarker
-      v-for="(marker, index) in reports"
+    <VMapMarker v-for="(marker, index) in reports"
       :key="index"
       :latlng="[marker.location.latitude, marker.location.longitude]"
       @click="clickedMarker(index)"
-    />
+    ><VMapPinIcon :color="markerColors[marker.riskLevel]"></VMapPinIcon></VMapMarker>
 </VMap>
   </div>
 </div>

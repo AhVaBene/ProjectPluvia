@@ -59,11 +59,8 @@ const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'
     >
         <MDBCard>
             <MDBCardBody>
-                <MDBCardTitle>{{ props.report.username }}</MDBCardTitle>
                 <div class="d-flex justify-content-between">
-                    <MDBCardText>
-                        <RouterLink v-if="isRouteMap" :to="{ name:'Map', params:{latlngzoom:report.location.latitude+','+report.location.longitude+',10'}}">Vai alla mappa </RouterLink>
-                    </MDBCardText>
+                    <MDBCardText><h4>{{ props.report.username }}</h4></MDBCardText>
                     <MDBCardText class="text-end">
                         <small class="text-muted">
                             {{ ("0" + reportDate.getUTCHours()).slice(-2) + ":" + ("0" + reportDate.getUTCMinutes()).slice(-2) }} - 
@@ -71,6 +68,9 @@ const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'
                         </small>
                     </MDBCardText>
                 </div>
+                <MDBCardText>
+                    <RouterLink v-if="isRouteMap" :to="{ name:'Map', params:{latlngzoom:report.location.latitude+','+report.location.longitude+',10'}}">{{ props.report.location.address + ", " + props.report.location.city }}</RouterLink>
+                </MDBCardText>
             </MDBCardBody>
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', props.report.pic)">
                 <MDBCardImg class="max-w-50" bottom v-bind:src="props.report.pic.toString()" :alt="`Report image at ${ fullAddress } of risk level ${props.report.riskLevel }`"/>

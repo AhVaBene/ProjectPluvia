@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { MDBInput, MDBBtn, MDBCollapse, MDBCheckbox, MDBModal, MDBModalHeader, MDBModalBody } from 'mdb-vue-ui-kit';
+import { MDBInput, MDBBtn, MDBCollapse, MDBCheckbox, MDBModal, MDBModalHeader, MDBModalBody, MDBIcon } from 'mdb-vue-ui-kit';
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 import ReportCard from './ReportCard.vue';
@@ -89,7 +89,7 @@ onMounted(()=>{getUserAdmin()})
     aria-controls="collapsibleContent"
     :aria-expanded="collapse"
     >
-      <i class="bi bi-list"></i>
+      <MDBIcon class="bi bi-list" size="lg"></MDBIcon>
     </MDBBtn>
   <MDBInput
     v-model="city"
@@ -114,7 +114,7 @@ onMounted(()=>{getUserAdmin()})
   >
     </MDBInput>
   <MDBBtn color="primary" @click="searchReports">
-    <i class="bi bi-search"></i>
+    <MDBIcon class="bi bi-search" size="lg"></MDBIcon>
   </MDBBtn>
 </div>
   <MDBCollapse

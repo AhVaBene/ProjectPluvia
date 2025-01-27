@@ -7,6 +7,7 @@ import MapView from '@/views/MapView.vue';
 import CreateView from '@/views/CreateView.vue';
 import NotificationsView from '@/views/NotificationsView.vue';
 import SearchView from '@/views/SearchView.vue';
+import NotFound from '@/views/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,7 +46,8 @@ const router = createRouter({
       path: "/notifications",
       name: "Notifications",
       component: NotificationsView,
-    }
+    },
+    { path: '/:pathMatch(.*)*', component: NotFound }
   ],
 })
 

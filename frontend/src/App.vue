@@ -8,20 +8,20 @@ import { useUserStore } from './stores/user';
 const route = useRoute();
 const userStore = useUserStore();
 
-const routeName = computed<string>(() => route.path)
+const routeName = computed<string>(() => route.path.split('/')[1])
 
-const bottomBarRoutes = ["/login", "/notifications", "/profile"]
-const topBarRoutes = ["/login"]
+const bottomBarRoutes = ["", "map", "createReport", "search"]
+const topBarRoutes = ["", "map", "createReport", "search", "notifications", "profile"]
 </script>
 
 <template>
-<TopBar v-if="!topBarRoutes.includes(routeName) && userStore.token"></TopBar>
+<TopBar v-if="topBarRoutes.includes(routeName) && userStore.token"></TopBar>
 
 <main class="col-md-12">
   <RouterView />
 </main>
 
-<BottomBar v-if="!bottomBarRoutes.includes(routeName) && userStore.token"></BottomBar>
+<BottomBar v-if="bottomBarRoutes.includes(routeName) && userStore.token"></BottomBar>
 </template>
 
 <style>

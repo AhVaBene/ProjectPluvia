@@ -4,26 +4,31 @@ import { computed, ref } from 'vue';
 import ReportCardFooterButton from './ReportCardFooterButton.vue';
 import axios from 'axios';
 import { RouterLink, useRoute } from 'vue-router';
-const activeItem = ref('');
+import { useUserStore } from '@/stores/user';
+
 const vMdbRipple = mdbRipple
-const dangerIcon = "fa fa-exclamation-circle fa-lg me-3 riskLevel"
+const dangerIcon: string = "fa fa-exclamation-circle fa-lg me-3 riskLevel"
 const route = useRoute()
+const userStore = useUserStore();
+
 const props = defineProps<{
     report: {
-        id: String,
+        id: string,
         location: {
-            city: String,
-            address: String,
-            latitude: Number,
-            longitude: Number,
+            city: string,
+            address: string,
+            latitude: number,
+            longitude: number,
             },
-        pic: String,
-        riskLevel: Number,
+        pic: string,
+        riskLevel: number,
         date: Date,
-        username: String
+        username: string
     },
     isUserAdmin: Boolean
 }>()
+
+const activeItem = ref<string>('');
 
 const fullAddress = computed<string>(() => {
     const addr = props.report.location.address + ", " + props.report.location.city
@@ -34,6 +39,7 @@ const fullAddress = computed<string>(() => {
 })
 const reportDate = computed<Date>(() => new Date(props.report.date))
 const iconClass = computed<string>(() => dangerIcon + props.report.riskLevel)
+const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'))
 
 const emits = defineEmits(["imgClicked"])
 
@@ -47,7 +53,6 @@ async function onVerificationClick(riskLevel: number):Promise<void> {
     ).data
     console.log(res)
 }
-const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'))
 </script>
 
 <template>
@@ -75,7 +80,7 @@ const isRouteMap = computed<boolean>(() => !route.path.toString().includes('map'
             <a v-mdb-ripple="{ color: 'light' }" v-on:click="$emit('imgClicked', props.report.pic)">
                 <MDBCardImg style="height:auto;width:auto;max-height: 20rem;margin:auto" class="max-w-50 text-center" bottom v-bind:src="props.report.pic.toString()" :alt="`Report image at ${ fullAddress } of risk level ${props.report.riskLevel }`"/>
             </a>
-            <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0">
+            <MDBCardFooter v-if="props.isUserAdmin && props.report.riskLevel==0 && props.report.username != userStore.user">
                 <div class="d-flex flex-column mb-3">
                     Assign a risk level
                     <div class="d-flex justify-content-between flex-row pt-2">
